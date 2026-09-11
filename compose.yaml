@@ -1,0 +1,21 @@
+services:
+  mariadb:
+    build: .
+    image: mariadb-two-engine:phase1
+    platform: linux/arm64
+    command:
+      - --plugin-maturity=alpha
+      - --plugin-load-add=ha_duckdb.so
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:?Set MARIADB_ROOT_PASSWORD in .env}
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+volumes:
+  mariadb-data:
