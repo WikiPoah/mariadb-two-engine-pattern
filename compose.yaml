@@ -2,7 +2,6 @@ services:
   mariadb:
     build: .
     image: mariadb-two-engine:phase1
-    platform: linux/arm64
     command:
       - --plugin-maturity=alpha
       - --plugin-load-add=ha_duckdb.so

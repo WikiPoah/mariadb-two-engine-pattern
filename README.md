@@ -4,27 +4,31 @@ A project for area 20, "An application that proves the two-engine pattern" for t
 
 A Constructor University project exploring operational and analytical workloads on different storage engines within one MariaDB server.
 
-Phase 1 establishes the technical foundation: MariaDB 12.3.3 on Linux/ARM64, an InnoDB `products` table, a DuckDB `sales` table, deterministic inserts, independent reads, and one cross-engine SQL JOIN. These tiny tables are a technical proof, not the final application schema.
+Phase 1 establishes the technical foundation: MariaDB 12.3.3 on Linux, an InnoDB `products` table, a DuckDB `sales` table, deterministic inserts, independent reads, and one cross-engine SQL JOIN. These tiny tables are a technical proof, not the final application schema.
 
 InnoDB is the provisional operational engine because its transactions, row-level locking, and crash recovery suit frequent transactional writes. DuckDB provides the analytical storage engine inside the same server. Phase 1 proves functionality; it does not yet establish performance benefits or cross-engine transaction semantics.
 
 ## Prerequisites
 
-- An ARM64 Mac with Docker Desktop running Linux/ARM64 containers.
-- Docker Compose available through Docker Desktop.
+- Docker with Compose, running Linux containers on one of these hosts:
+  - Apple Silicon Mac: Docker Desktop (`linux/arm64`).
+  - Intel/AMD Linux: Docker Engine and Compose (`linux/amd64`).
+  - Windows on Intel/AMD: Docker Desktop with WSL2 integration (`linux/amd64`).
+  - Intel Mac: a Docker Desktop/macOS combination that supports Linux AMD64 containers.
 - Internet access for the initial image build and package downloads.
 - This repository cloned locally. No host MariaDB installation is required.
 
-Run all shell commands below in your **Mac terminal**, from the repository root. The commands invoke the MariaDB client inside the container.
+The updated Dockerfile and complete ARM64 runtime workflow have been verified locally on Apple Silicon. The AMD64 image build has also passed under emulation, including the pinned plugin checksum, package installation, and image architecture check. AMD64 runtime execution has not yet been verified; plugin loading and the SQL proof still need to be tested on AMD64.
+
+Run all shell commands below in your **Mac terminal**, **Linux terminal**, or **WSL Linux shell on Windows**, from the repository root. Use the WSL shell rather than PowerShell for the SQL input redirection. The commands invoke the MariaDB client inside the container.
 
 ```sh
-cd ~/Uni/mariadb-two-engine-pattern
-export PATH="/Applications/Docker.app/Contents/Resources/bin:$PATH"
+cd /path/to/mariadb-two-engine-pattern
 docker version
 docker compose version
 ```
 
-The PATH setting makes Docker Desktop's CLI available in this terminal session. Check that `docker version` reports both a client and a running server.
+Use your actual clone path (for example, `~/Uni/mariadb-two-engine-pattern`). On macOS, if `docker` is not on PATH, run `export PATH="/Applications/Docker.app/Contents/Resources/bin:$PATH"` and repeat the checks. On Windows, enable Docker Desktop integration for your WSL distribution. Check that `docker version` reports both a client and a running server.
 
 ## Start and run the proof
 
@@ -100,11 +104,12 @@ After a reset, start the stack and run setup followed by verification again.
 
 ## Runtime pins and storage
 
-- Platform: `linux/arm64`.
+- Platforms: `linux/arm64` and `linux/amd64`; Compose uses the Docker host's native Linux architecture.
 - Base image: `mariadb:12.3.3-noble@sha256:ab1c3dd381940233af12512b97d47b508fd3a0f17fbe3ba388739b7bc17cbc0b` (official MariaDB, Ubuntu 24.04).
 - Plugin package: `mariadb-plugin-duckdb=1:12.3.3+maria~ubu2404` from the MariaDB 12.3.3 release archive.
-- Downloaded ARM64 package: `mariadb-plugin-duckdb_1%3a12.3.3+maria~ubu2404_arm64.deb`.
-- Verified package SHA256: `8860a23a0bcaaf7f3f85d8e296f75fda27026ec9a46e9e4acbe1d832643f72bb`.
+- Downloaded package: `mariadb-plugin-duckdb_1%3a12.3.3+maria~ubu2404_<architecture>.deb`, selected using `dpkg --print-architecture`.
+- Pinned ARM64 SHA256: `8860a23a0bcaaf7f3f85d8e296f75fda27026ec9a46e9e4acbe1d832643f72bb`.
+- Pinned AMD64 SHA256: `f96044a1000b20fd9f95e2ed22e4ebcab7e29f9f653c33588c12d2294d4660cc`.
 - Local image: `mariadb-two-engine:phase1`, built from `Dockerfile`.
 - Startup options: `--plugin-maturity=alpha` and `--plugin-load-add=ha_duckdb.so`. The tested plugin reports `ACTIVE` and maturity `Gamma`.
 
@@ -112,4 +117,4 @@ The server and plugin are prebuilt binaries; no source compilation is needed. Th
 
 Compose persists database files at `/var/lib/mysql` in the named `mariadb-data` volume (normally `mariadb-two-engine-pattern_mariadb-data`). No host port is published; use `docker compose exec` for access.
 
-The [MariaDB 12.3.3 engine source](https://github.com/MariaDB/server/tree/mariadb-12.3.3/storage/duckdb) and [official ARM64 package index](https://archive.mariadb.org/mariadb-12.3.3/repo/ubuntu/dists/noble/main/binary-arm64/Packages.gz) identify the runtime used here. There is no simulator, API, dashboard, or benchmark framework in Phase 1.
+The [MariaDB 12.3.3 engine source](https://github.com/MariaDB/server/tree/mariadb-12.3.3/storage/duckdb) and official [AMD64](https://archive.mariadb.org/mariadb-12.3.3/repo/ubuntu/dists/noble/main/binary-amd64/Packages.gz) and [ARM64 package indexes](https://archive.mariadb.org/mariadb-12.3.3/repo/ubuntu/dists/noble/main/binary-arm64/Packages.gz) identify the runtime used here. There is no simulator, API, dashboard, or benchmark framework in Phase 1.
