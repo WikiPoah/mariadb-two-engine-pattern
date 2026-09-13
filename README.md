@@ -1,26 +1,28 @@
 A project for area 20, "An application that proves the two-engine pattern" for the MariaDB student database projects, 2026-09.
 
-# MariaDB two-engine pattern
+# Real-Time Commerce & Campaign Analytics
 
-A Constructor University project exploring operational and analytical workloads on different storage engines within one MariaDB server.
+A Constructor University project investigating when operational and analytical workloads benefit from different storage engines inside one MariaDB server.
 
-Phase 1 establishes the technical foundation: MariaDB 12.3.3 on Linux, an InnoDB `products` table, a DuckDB `sales` table, deterministic inserts, independent reads, and one cross-engine SQL JOIN. These tiny tables are a technical proof, not the final application schema.
+Current work is **Phase 2 — Application & Schema**: five tables, deterministic commerce activity, and a campaign conversion/revenue query combining DuckDB session history with InnoDB purchases. InnoDB owns products, campaigns, orders, and order items; DuckDB owns `activity_events`. Checkout stays entirely inside InnoDB.
 
-InnoDB is the provisional operational engine because its transactions, row-level locking, and crash recovery suit frequent transactional writes. DuckDB provides the analytical storage engine inside the same server. Phase 1 proves functionality; it does not yet establish performance benefits or cross-engine transaction semantics.
+The original foundation is preserved in Git at `v0.1.0`. Continuous simulation, Flask/API/dashboard work, performance comparisons, and cross-engine transaction/staleness experiments remain future phases. Functionality has been demonstrated; performance superiority has not.
+
+See [the schema guide](docs/schema.md) for relationships, integrity boundaries, and observed plugin limitations.
 
 ## Prerequisites
 
-- Docker with Compose, running Linux containers on one of these hosts:
+- Docker and Compose running Linux containers:
   - Apple Silicon Mac: Docker Desktop (`linux/arm64`).
   - Intel/AMD Linux: Docker Engine and Compose (`linux/amd64`).
   - Windows on Intel/AMD: Docker Desktop with WSL2 integration (`linux/amd64`).
-  - Intel Mac: a Docker Desktop/macOS combination that supports Linux AMD64 containers.
-- Internet access for the initial image build and package downloads.
-- This repository cloned locally. No host MariaDB installation is required.
+  - Intel Mac: a supported Docker Desktop/macOS environment for Linux AMD64 containers.
+- Internet access for image/package downloads and a local clone of this repository.
+- No host MariaDB installation is needed.
 
-The updated Dockerfile and complete ARM64 runtime workflow have been verified locally on Apple Silicon. The AMD64 image build has also passed under emulation, including the pinned plugin checksum, package installation, and image architecture check. AMD64 runtime execution has not yet been verified; plugin loading and the SQL proof still need to be tested on AMD64.
+The ARM64 foundation workflow and application schema/seed/verification have passed locally on Apple Silicon. The AMD64 image build passed under emulation, including checksum and package installation checks; AMD64 database runtime and SQL execution remain unverified.
 
-Run all shell commands below in your **Mac terminal**, **Linux terminal**, or **WSL Linux shell on Windows**, from the repository root. Use the WSL shell rather than PowerShell for the SQL input redirection. The commands invoke the MariaDB client inside the container.
+Run shell commands in your **Mac terminal**, **Linux terminal**, or **WSL Linux shell on Windows**, from the repository root. SQL clients run inside the container. Use WSL rather than PowerShell for the input redirection shown below.
 
 ```sh
 cd /path/to/mariadb-two-engine-pattern
@@ -28,79 +30,84 @@ docker version
 docker compose version
 ```
 
-Use your actual clone path (for example, `~/Uni/mariadb-two-engine-pattern`). On macOS, if `docker` is not on PATH, run `export PATH="/Applications/Docker.app/Contents/Resources/bin:$PATH"` and repeat the checks. On Windows, enable Docker Desktop integration for your WSL distribution. Check that `docker version` reports both a client and a running server.
+Use your actual clone path, such as `~/Uni/mariadb-two-engine-pattern`. If Docker is missing from PATH on macOS, run `export PATH="/Applications/Docker.app/Contents/Resources/bin:$PATH"` and repeat the checks. On Windows, enable Docker Desktop integration for your WSL distribution. Confirm that Docker reports both client and server.
 
-## Start and run the proof
+## Fresh-storage setup
 
-On first setup, copy the credential template:
+Only on first setup, copy the credential template:
 
 ```sh
 cp .env.example .env
 ```
 
-Edit `.env` and give `MARIADB_ROOT_PASSWORD` a nonempty local development password. A random alphanumeric password avoids Compose interpolation issues. `.env` is ignored by Git; keep the existing file on subsequent runs. The password initializes fresh database storage: changing `.env` later does not change an existing database's root password.
+Set a nonempty local development `MARIADB_ROOT_PASSWORD` in `.env`; a random alphanumeric value avoids interpolation issues. Keep your existing `.env` on subsequent runs. Git ignores it. Changing this value does not reset a password already initialized in a persistent volume.
 
-Build and start the service, waiting for its health check:
+For the transition from the old foundation or a deliberate clean rerun, the following command **deletes this Compose stack's database volume and all its data**. Skip it if no prior stack exists or you intend to keep your data:
+
+```sh
+docker compose down --volumes
+```
+
+There is no automatic migration or deletion of `engine_proof`. The current schema creates a separate database, `commerce_analytics`. The fresh-volume workflow removes old data only through the explicit reset above.
+
+Build and start MariaDB:
 
 ```sh
 docker compose up --build --wait --wait-timeout 120
 docker compose ps
 ```
 
-The `mariadb` service should report `healthy`. If startup fails, inspect `docker compose logs mariadb` before proceeding. The health check confirms database readiness; verify DuckDB explicitly:
+Expect `healthy`. If startup fails, inspect `docker compose logs mariadb` before continuing. Check server and plugin availability:
 
 ```sh
 docker compose exec -T mariadb sh -c 'MYSQL_PWD="$MARIADB_ROOT_PASSWORD" mariadb --user=root --protocol=socket --table --execute="SELECT VERSION(); SHOW ENGINES;"'
 ```
 
-Expect version `12.3.3-MariaDB-ubu2404` and `DUCKDB` support `YES`.
+Expect `12.3.3-MariaDB-ubu2404` and `DUCKDB` support `YES`.
 
-Run setup **once per fresh database volume**:
-
-```sh
-docker compose exec -T mariadb sh -c 'MYSQL_PWD="$MARIADB_ROOT_PASSWORD" mariadb --user=root --protocol=socket' < sql/01-foundation.sql
-```
-
-Setup creates `engine_proof`, its two tables, and sample rows. It deliberately fails if the database already exists. SQL is not run automatically at startup.
-
-Run verification whenever needed:
+Run these commands **in order**, checking each result before continuing:
 
 ```sh
-docker compose exec -T mariadb sh -c 'MYSQL_PWD="$MARIADB_ROOT_PASSWORD" mariadb --user=root --protocol=socket --table' < sql/02-verify.sql
+docker compose exec -T mariadb sh -c 'MYSQL_PWD="$MARIADB_ROOT_PASSWORD" mariadb --user=root --protocol=socket --default-character-set=utf8mb4 --show-warnings' < sql/01-schema.sql
 ```
 
-This reads both tables, checks their actual storage engines, and executes the JOIN. Expected engine mapping:
+```sh
+docker compose exec -T mariadb sh -c 'MYSQL_PWD="$MARIADB_ROOT_PASSWORD" mariadb --user=root --protocol=socket --default-character-set=utf8mb4 --show-warnings' < sql/02-seed.sql
+```
 
-| Table | Engine |
-| --- | --- |
-| products | InnoDB |
-| sales | DUCKDB |
+```sh
+docker compose exec -T mariadb sh -c 'MYSQL_PWD="$MARIADB_ROOT_PASSWORD" mariadb --user=root --protocol=socket --default-character-set=utf8mb4 --table --show-warnings' < sql/03-verify.sql
+```
 
-Expected cross-engine JOIN result:
+Schema and seed are one-time scripts for an empty application database; they are not idempotent and do not run automatically at startup. Do not use client `--force` to continue after SQL errors. The seed prints product IDs from its locking reads. Verification is read-only and can be repeated; inspect its results, since unexpected counts do not automatically cause a nonzero client exit.
 
-| sale_id | name | quantity |
-| --- | --- | --- |
-| 1 | Notebook | 2 |
-| 2 | Pen | 5 |
-| 3 | Notebook | 1 |
+## Expected results
 
-## Stop or reset
+| Table | Engine | Seed rows |
+| --- | --- | ---: |
+| products | InnoDB | 3 |
+| campaigns | InnoDB | 2 |
+| orders | InnoDB | 3 |
+| order_items | InnoDB | 4 |
+| activity_events | DUCKDB | 11 |
 
-Stop the stack while preserving its data:
+Five sessions produce three purchases. Final stock is 98 notebooks, 95 pens, and 99 mugs. The notebook's catalog price is EUR 12.00 while its purchase-time price remains EUR 10.00. Total historical revenue is EUR 38.00. Engine/stock/price matches must be `1`, and logical-integrity violation counts must be `0`.
+
+For session starts on 2026-09-13 in `[12:00, 12:05)` UTC, observing purchases through 12:10 UTC inclusive:
+
+| Attribution | Current campaign state | Sessions | Purchasing sessions | Conversion (%) | Revenue (EUR) |
+| --- | --- | ---: | ---: | ---: | ---: |
+| Campus Launch | Active | 2 | 1 | 50.00 | 26.00 |
+| Study Week | Paused | 1 | 1 | 100.00 | 8.00 |
+| Organic | — | 2 | 1 | 50.00 | 4.00 |
+
+## Stop and resume
 
 ```sh
 docker compose stop
 ```
 
-Start it again with the earlier `up` command, then run verification directly; do not repeat setup on the existing database.
-
-To deliberately reset, the following command **deletes the database volume and all proof data**:
-
-```sh
-docker compose down --volumes
-```
-
-After a reset, start the stack and run setup followed by verification again.
+The named volume retains data. Resume with the earlier `up` command and run **only `03-verify.sql`** against the existing seeded database. To start over, use the deliberate volume reset and all three SQL scripts.
 
 ## Runtime pins and storage
 
@@ -117,4 +124,4 @@ The server and plugin are prebuilt binaries; no source compilation is needed. Th
 
 Compose persists database files at `/var/lib/mysql` in the named `mariadb-data` volume (normally `mariadb-two-engine-pattern_mariadb-data`). No host port is published; use `docker compose exec` for access.
 
-The [MariaDB 12.3.3 engine source](https://github.com/MariaDB/server/tree/mariadb-12.3.3/storage/duckdb) and official [AMD64](https://archive.mariadb.org/mariadb-12.3.3/repo/ubuntu/dists/noble/main/binary-amd64/Packages.gz) and [ARM64 package indexes](https://archive.mariadb.org/mariadb-12.3.3/repo/ubuntu/dists/noble/main/binary-arm64/Packages.gz) identify the runtime used here. There is no simulator, API, dashboard, or benchmark framework in Phase 1.
+The [MariaDB 12.3.3 engine source](https://github.com/MariaDB/server/tree/mariadb-12.3.3/storage/duckdb) and official [AMD64](https://archive.mariadb.org/mariadb-12.3.3/repo/ubuntu/dists/noble/main/binary-amd64/Packages.gz) and [ARM64 package indexes](https://archive.mariadb.org/mariadb-12.3.3/repo/ubuntu/dists/noble/main/binary-arm64/Packages.gz) identify the runtime used here.
