@@ -3,7 +3,7 @@
 from datetime import datetime, timezone
 from decimal import Decimal
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, render_template, request
 from flask.json.provider import DefaultJSONProvider
 
 from dashboard import queries
@@ -25,7 +25,7 @@ class DashboardJSONProvider(DefaultJSONProvider):
 
 def create_app(*, connection_factory=None):
     """An injected factory must return a connection context manager."""
-    app = Flask(__name__, static_folder=None)
+    app = Flask(__name__)
     app.json = DashboardJSONProvider(app)
     if connection_factory is None:
         config = database_config()
@@ -43,6 +43,10 @@ def create_app(*, connection_factory=None):
         except Exception:
             # Driver errors can contain SQL and connection details; keep them private.
             return jsonify(error="Unable to read dashboard data"), 500
+
+    @app.get("/")
+    def index():
+        return render_template("index.html")
 
     @app.get("/api/overview")
     def overview():
