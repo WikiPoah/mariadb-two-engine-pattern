@@ -7,19 +7,22 @@ import pymysql
 
 
 @contextmanager
+def open_connection(config: dict):
+    with pymysql.connect(
+        **config, charset="utf8mb4", collation="utf8mb4_bin", autocommit=True,
+    ) as connection:
+        with connection.cursor() as cursor:
+            cursor.execute("SET SESSION time_zone = '+00:00'")
+        yield connection
+
+
+@contextmanager
 def open_connections(config: dict):
-    # Separate connections keep event writes outside future checkout transactions.
-    # Autocommit also prevents catalog reads retaining an old InnoDB snapshot.
+    # Separate sessions keep event writes outside future checkout transactions.
+    # Autocommit prevents catalog reads retaining an old InnoDB snapshot.
     with ExitStack() as stack:
-        connections = []
-        for _ in range(2):
-            connection = stack.enter_context(pymysql.connect(
-                **config, charset="utf8mb4", collation="utf8mb4_bin", autocommit=True,
-            ))
-            with connection.cursor() as cursor:
-                cursor.execute("SET SESSION time_zone = '+00:00'")
-            connections.append(connection)
-        operational, events = connections
+        operational = stack.enter_context(open_connection(config))
+        events = stack.enter_context(open_connection(config))
         yield operational, events
 
 
@@ -43,7 +46,7 @@ def active_product_ids(operational) -> list[int]:
 def _utc_datetime(timestamp: datetime) -> datetime:
     # DATETIME has no timezone: normalize before the driver serializes its fields.
     if timestamp.utcoffset() is None:
-        raise ValueError("Event timestamps must be timezone-aware")
+        raise ValueError("Database timestamps must be timezone-aware")
     return timestamp.astimezone(timezone.utc).replace(tzinfo=None)
 
 
