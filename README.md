@@ -4,9 +4,9 @@ A project for area 20, "An application that proves the two-engine pattern" for t
 
 A Constructor University project investigating when operational and analytical workloads benefit from different storage engines inside one MariaDB server.
 
-Current work is **Phase 2 — Application & Schema**: five tables, deterministic commerce activity, and a campaign conversion/revenue query combining DuckDB session history with InnoDB purchases. InnoDB owns products, campaigns, orders, and order items; DuckDB owns `activity_events`. Checkout stays entirely inside InnoDB.
+The application includes five tables, deterministic commerce activity, a continuous session simulator, and a campaign conversion/revenue query combining DuckDB session history with InnoDB purchases. InnoDB owns products, campaigns, orders, and order items; DuckDB owns `activity_events`. Checkout stays entirely inside InnoDB.
 
-The original foundation is preserved in Git at `v0.1.0`. Continuous simulation, Flask/API/dashboard work, performance comparisons, and cross-engine transaction/staleness experiments remain future phases. Functionality has been demonstrated; performance superiority has not.
+The original foundation is preserved in Git at `v0.1.0`. Flask/API/dashboard work, performance comparisons, and cross-engine transaction/staleness experiments remain future work. Functionality has been demonstrated; performance superiority has not.
 
 See [the schema guide](docs/schema.md) for relationships, integrity boundaries, and observed plugin limitations.
 
@@ -100,6 +100,23 @@ For session starts on 2026-09-13 in `[12:00, 12:05)` UTC, observing purchases th
 | Campus Launch | Active | 2 | 1 | 50.00 | 26.00 |
 | Study Week | Paused | 1 | 1 | 100.00 | 8.00 |
 | Organic | — | 2 | 1 | 50.00 | 4.00 |
+
+## Run the simulator
+
+After loading schema and seed, run the companion service from the repository root:
+
+```sh
+docker compose build simulator
+docker compose run --rm simulator --seed 17 --sessions 20 --session-interval 0.1
+```
+
+For continuous sessions at the default three-second interval, omit `--sessions` and `--session-interval`. Stop with Ctrl+C. The `simulator` profile keeps it out of ordinary `docker compose up`; explicitly naming it with `run` enables it. MariaDB must be healthy before it starts, but health does not imply the schema has been loaded.
+
+The simulator uses the internal `mariadb:3306` endpoint; no host port is published. Its separate Python image installs `PyMySQL==1.2.0` and copies the simulator source. Rebuild after source changes. It uses the existing local root credential from `.env` because this setup provisions no separate application user; no grants or schema constraints are changed. Passwords are passed at runtime, not baked into the image.
+
+Simulation changes stock and adds events/orders, so the fixed counts in `03-verify.sql` apply only before simulation. To preserve a development fixture, use a separate project: add `-p commerce-simulator-demo` to **every** Compose setup, SQL, build, run, and cleanup command. That project receives its own database volume. When finished, `docker compose -p commerce-simulator-demo down --volumes` deletes only that project's data.
+
+The behavioural seed reproduces choices against the same inputs; UUIDs and timestamps remain fresh. Inventory is finite and is not replenished automatically. Checkout remains entirely in InnoDB; event-write failures end the affected session without retrying it.
 
 ## Stop and resume
 

@@ -16,5 +16,18 @@ services:
       retries: 12
       start_period: 30s
 
+  simulator:
+    profiles: [simulator]
+    build: ./simulator
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    environment:
+      MARIADB_HOST: mariadb
+      MARIADB_PORT: "3306"
+      MARIADB_DATABASE: commerce_analytics
+      MARIADB_USER: root
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:?Set MARIADB_ROOT_PASSWORD in .env}
+
 volumes:
   mariadb-data:
