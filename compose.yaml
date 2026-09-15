@@ -1,12 +1,13 @@
 services:
   mariadb:
     build: .
-    image: mariadb-two-engine:phase1
+    image: mariadb-two-engine:12.3.3
     command:
       - --plugin-maturity=alpha
       - --plugin-load-add=ha_duckdb.so
     environment:
       MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:?Set MARIADB_ROOT_PASSWORD in .env}
+      MARIADB_DASHBOARD_PASSWORD: ${MARIADB_DASHBOARD_PASSWORD:?Set MARIADB_DASHBOARD_PASSWORD in .env}
     volumes:
       - mariadb-data:/var/lib/mysql
     healthcheck:
@@ -28,6 +29,22 @@ services:
       MARIADB_DATABASE: commerce_analytics
       MARIADB_USER: root
       MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:?Set MARIADB_ROOT_PASSWORD in .env}
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: dashboard/Dockerfile
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:5000:5000"
+    environment:
+      MARIADB_HOST: mariadb
+      MARIADB_PORT: "3306"
+      MARIADB_DATABASE: commerce_analytics
+      MARIADB_USER: dashboard
+      MARIADB_PASSWORD: ${MARIADB_DASHBOARD_PASSWORD:?Set MARIADB_DASHBOARD_PASSWORD in .env}
 
 volumes:
   mariadb-data:

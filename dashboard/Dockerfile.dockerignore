@@ -1,0 +1,8 @@
+**
+!dashboard/
+!dashboard/**
+!simulator/
+!simulator/__init__.py
+!simulator/config.py
+!simulator/database.py
+!simulator/requirements.txt

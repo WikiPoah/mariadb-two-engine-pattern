@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Commerce &amp; Campaign Analytics</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+  <script defer src="{{ url_for('static', filename='dashboard.js') }}"></script>
+</head>
+<body>
+  <header class="page-header">
+    <p class="eyebrow">MariaDB · Two-engine commerce</p>
+    <h1>Commerce &amp; Campaign Analytics</h1>
+    <p>One server. Transactional commerce in <strong>InnoDB</strong>, behavioural history in <strong>DuckDB</strong>.</p>
+    <div class="context"><span>All-time metrics · EUR · UTC</span><span>Refreshes every 5 seconds after reads complete</span></div>
+    <p class="muted">Panels are independent observations, not an atomic cross-engine snapshot.</p>
+  </header>
+  <main>
+    <noscript><p class="error">Enable JavaScript to load the dashboard data.</p></noscript>
+    <section id="overview" aria-labelledby="overview-title" data-url="{{ url_for('overview') }}">
+      <div class="section-heading"><h2 id="overview-title">Commerce Overview</h2><span class="badge combined">InnoDB + DuckDB</span></div>
+      <p class="panel-status" role="status">Loading…</p>
+      <div class="metrics">
+        <div class="metric"><span>Orders</span><strong data-metric="orders">—</strong><span class="badge">InnoDB</span></div>
+        <div class="metric"><span>Revenue</span><strong data-metric="revenue">—</strong><span class="badge">InnoDB</span></div>
+        <div class="metric"><span>Units sold</span><strong data-metric="units_sold">—</strong><span class="badge">InnoDB</span></div>
+        <div class="metric"><span>Sessions</span><strong data-metric="sessions">—</strong><span class="badge analytical">DuckDB</span></div>
+        <div class="metric"><span>Product views</span><strong data-metric="product_views">—</strong><span class="badge analytical">DuckDB</span></div>
+      </div>
+    </section>
+    <section id="campaigns" aria-labelledby="campaigns-title" data-url="{{ url_for('campaigns') }}">
+      <div class="section-heading"><h2 id="campaigns-title">Campaign Performance</h2><span class="badge combined">InnoDB + DuckDB</span></div>
+      <p class="muted">Session acquisition from DuckDB, purchases and historical revenue from InnoDB. Paused campaigns retain attribution.</p>
+      <p class="panel-status" role="status">Loading…</p>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Campaign performance table">
+        <table><thead><tr><th scope="col">Campaign</th><th scope="col">Sessions</th><th scope="col">Purchasing sessions</th><th scope="col">Conversion</th><th scope="col">Revenue</th><th scope="col">Current state</th></tr></thead><tbody></tbody></table>
+      </div>
+    </section>
+    <section id="inventory" aria-labelledby="inventory-title" data-url="{{ url_for('inventory') }}">
+      <div class="section-heading"><h2 id="inventory-title">Inventory</h2><span class="badge">InnoDB</span></div>
+      <p class="muted">Authoritative operational state. Catalog prices may differ from purchase-time prices.</p>
+      <p class="panel-status" role="status">Loading…</p>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Inventory table">
+        <table><thead><tr><th scope="col">Product</th><th scope="col">Current price</th><th scope="col">Stock</th><th scope="col">State</th></tr></thead><tbody></tbody></table>
+      </div>
+    </section>
+    <section id="activity" aria-labelledby="activity-title" data-url="{{ url_for('activity') }}">
+      <div class="section-heading"><h2 id="activity-title">Recent Activity</h2><span class="badge analytical">DuckDB</span></div>
+      <p class="muted">Latest 50 behavioural events. Raw campaign and product identifiers; sessions without purchases may still be in progress.</p>
+      <p class="panel-status" role="status">Loading…</p>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Recent activity table">
+        <table><thead><tr><th scope="col">Timestamp (UTC)</th><th scope="col">Event</th><th scope="col">Session</th><th scope="col">Campaign</th><th scope="col">Product ID</th></tr></thead><tbody></tbody></table>
+      </div>
+    </section>
+  </main>
+  <footer>Read-only observations · MariaDB 12.3.3 · InnoDB + DuckDB</footer>
+</body>
+</html>
