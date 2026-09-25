@@ -37,7 +37,7 @@ until "$docker_bin" compose -p "$project" exec -T mariadb \
 
 "$docker_bin" compose -p "$project" exec -T \
   -e MYSQL_PWD="$MARIADB_ROOT_PASSWORD" mariadb \
-  mariadb --user=root commerce_analytics < sql/01-schema.sql
+  mariadb --user=root < sql/01-schema.sql
 "$docker_bin" compose -p "$project" exec -T \
   -e MYSQL_PWD="$MARIADB_ROOT_PASSWORD" mariadb \
   mariadb --user=root commerce_analytics < sql/02-seed.sql
@@ -103,3 +103,56 @@ The commit control deliberately leaves its temporary order, item, stock
 change, and event in the disposable database as evidence. Do not delete those
 rows individually; destroy the disposable project and volume after recording
 the fresh-connection result.
+
+## Integrity enforcement comparison
+
+**Question:** Which declared constraints relevant to this application are
+actually enforced by InnoDB and the MariaDB DuckDB storage engine in the
+pinned runtime?
+
+**Procedure:** Five small scripts each attempt one violation against an existing
+application table:
+
+- `sql/04a-innodb-duplicate-pk.sql`
+- `sql/04b-duckdb-duplicate-pk.sql`
+- `sql/04c-innodb-foreign-key.sql`
+- `sql/04d-innodb-check.sql`
+- `sql/04e-duckdb-check.sql`
+
+Run every script in its own new disposable Compose project and volume. Before
+the mutation, use a separate MariaDB client to record the relevant table count,
+key or probe-row count, and engine. Run the script in a second client and record
+its exit status plus any error or warning. Regardless of that outcome, use a
+new connection to inspect the durable state. Do not delete accepted probe rows;
+destroy the case's disposable project and volume before starting the next one.
+This separation prevents an unexpected engine or commit result from affecting
+another case.
+
+The real DuckDB-backed schema declares no foreign key. Its campaign and product
+references are logical, so an equivalent DuckDB FK probe would test a schema
+the application does not use.
+
+**Observation:** Record the baseline, mutation diagnostic, and fresh-connection
+state for each case. These instructions do not predict the outcomes.
+
+**Interpretation:** Compare the observed runtime behavior with each table's
+declared constraints. Treat the output as evidence for the pinned MariaDB
+12.3.3 environment, not as a universal storage-engine guarantee.
+
+For each case, choose a new unique project name before starting MariaDB and
+reuse it for startup, health checks, schema/seed loading, baseline inspection,
+the single mutation, fresh-connection verification, and cleanup. Confirm
+MariaDB 12.3.3 and the active DuckDB plugin, then load the unchanged schema and
+seed. Execute one case, for example:
+
+```sh
+"$docker_bin" compose -p "$project" exec -T \
+  -e MYSQL_PWD="$MARIADB_ROOT_PASSWORD" mariadb \
+  mariadb --user=root commerce_analytics --show-warnings \
+  < experiments/sql/04a-innodb-duplicate-pk.sql
+```
+
+An expected rejection makes that client command nonzero; capture its status and
+diagnostic before opening the fresh verification connection. Use the same
+`down --volumes --remove-orphans` cleanup shown above for every case and verify
+that its containers and volume are gone before continuing.
