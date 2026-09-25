@@ -1,0 +1,123 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    env:
+      COMPOSE_PROJECT_NAME: ci-${{ github.run_id }}-${{ github.run_attempt }}
+      MARIADB_ROOT_PASSWORD: ci-root-${{ github.run_id }}-${{ github.run_attempt }}
+      MARIADB_DASHBOARD_PASSWORD: ci-dashboard-${{ github.run_id }}-${{ github.run_attempt }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r dashboard/requirements.txt
+
+      - name: Run Python tests
+        run: python -B -m unittest discover -s tests -v
+
+      - name: Check whitespace
+        run: git diff --check
+
+      - name: Validate Compose configuration
+        run: docker compose config --quiet
+
+      - name: Start MariaDB
+        run: docker compose up --build --wait --wait-timeout 180 mariadb
+
+      - name: Verify MariaDB and DuckDB runtime
+        shell: bash
+        run: |
+          version="$(docker compose exec -T mariadb sh -c \
+            'MYSQL_PWD="$MARIADB_ROOT_PASSWORD" mariadb --user=root --protocol=socket --batch --skip-column-names --execute="SELECT VERSION();"')"
+          test "$version" = "12.3.3-MariaDB-ubu2404"
+
+          duckdb_status="$(docker compose exec -T mariadb sh -c \
+            'MYSQL_PWD="$MARIADB_ROOT_PASSWORD" mariadb --user=root --protocol=socket --batch --skip-column-names --execute="SELECT CONCAT(e.SUPPORT, '\''/'\'', p.PLUGIN_STATUS) FROM information_schema.ENGINES AS e JOIN information_schema.PLUGINS AS p ON p.PLUGIN_NAME = '\''DUCKDB'\'' WHERE e.ENGINE = '\''DUCKDB'\'';"')"
+          test "$duckdb_status" = "YES/ACTIVE"
+
+      - name: Load deterministic fixture
+        run: |
+          docker compose exec -T mariadb sh -c \
+            'MYSQL_PWD="$MARIADB_ROOT_PASSWORD" mariadb --user=root --protocol=socket --default-character-set=utf8mb4 --show-warnings' \
+            < sql/01-schema.sql
+          docker compose exec -T mariadb sh -c \
+            'MYSQL_PWD="$MARIADB_ROOT_PASSWORD" mariadb --user=root --protocol=socket --default-character-set=utf8mb4 --show-warnings' \
+            < sql/02-seed.sql
+
+      - name: Run deterministic verification
+        run: |
+          docker compose exec -T mariadb sh -c \
+            'MYSQL_PWD="$MARIADB_ROOT_PASSWORD" mariadb --user=root --protocol=socket --default-character-set=utf8mb4 --table --show-warnings' \
+            < sql/03-verify.sql
+
+      - name: Assert deterministic results
+        shell: bash
+        run: |
+          assert_query() {
+            local label="$1"
+            local sql="$2"
+            local expected="$3"
+            local actual
+            actual="$(docker compose exec -T mariadb sh -c \
+              'MYSQL_PWD="$MARIADB_ROOT_PASSWORD" mariadb --user=root --protocol=socket --batch --skip-column-names --execute="$1"' \
+              sh "$sql")"
+            if [[ "$actual" != "$expected" ]]; then
+              printf '%s: expected %s, got %s\n' "$label" "$expected" "$actual" >&2
+              return 1
+            fi
+          }
+
+          assert_query products_engine \
+            "SELECT ENGINE FROM information_schema.TABLES WHERE TABLE_SCHEMA='commerce_analytics' AND TABLE_NAME='products';" \
+            InnoDB
+          assert_query campaigns_engine \
+            "SELECT ENGINE FROM information_schema.TABLES WHERE TABLE_SCHEMA='commerce_analytics' AND TABLE_NAME='campaigns';" \
+            InnoDB
+          assert_query orders_engine \
+            "SELECT ENGINE FROM information_schema.TABLES WHERE TABLE_SCHEMA='commerce_analytics' AND TABLE_NAME='orders';" \
+            InnoDB
+          assert_query order_items_engine \
+            "SELECT ENGINE FROM information_schema.TABLES WHERE TABLE_SCHEMA='commerce_analytics' AND TABLE_NAME='order_items';" \
+            InnoDB
+          assert_query activity_events_engine \
+            "SELECT ENGINE FROM information_schema.TABLES WHERE TABLE_SCHEMA='commerce_analytics' AND TABLE_NAME='activity_events';" \
+            DUCKDB
+          assert_query orders_count \
+            "SELECT COUNT(*) FROM commerce_analytics.orders;" \
+            3
+          assert_query order_items_count \
+            "SELECT COUNT(*) FROM commerce_analytics.order_items;" \
+            4
+          assert_query notebook_stock \
+            "SELECT stock_quantity FROM commerce_analytics.products WHERE name='Notebook';" \
+            98
+          assert_query historical_revenue \
+            "SELECT CAST(COALESCE(SUM(quantity * unit_price), 0) AS DECIMAL(10,2)) FROM commerce_analytics.order_items;" \
+            38.00
+          assert_query activity_events_count \
+            "SELECT COUNT(*) FROM commerce_analytics.activity_events;" \
+            11
+
+      - name: Clean up Compose resources
+        if: always()
+        run: docker compose down --volumes --remove-orphans
