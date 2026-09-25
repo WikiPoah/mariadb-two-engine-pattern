@@ -64,11 +64,12 @@ invisible before `ROLLBACK` does not by itself demonstrate rollback semantics.
 The script reports each checkpoint and does not claim an outcome before
 execution.
 
-Use a new disposable Compose project and repeat the same health, schema, and
-seed commands above. After loading `sql/02-seed.sql`, execute:
+Choose a new project name before starting MariaDB and reuse the same `$project`
+value for startup, health checks, schema/seed loading, this execution, fresh
+connection verification, and cleanup. Repeat the same setup commands above.
+After loading `sql/02-seed.sql`, execute:
 
 ```sh
-project=duckdb-rollback-$(date +%s)
 "$docker_bin" compose -p "$project" exec -T \
   -e MYSQL_PWD="$MARIADB_ROOT_PASSWORD" mariadb \
   mariadb --user=root commerce_analytics < experiments/sql/02-duckdb-rollback.sql
@@ -77,3 +78,28 @@ project=duckdb-rollback-$(date +%s)
 Open a new MariaDB connection afterwards and query the total event count plus
 both temporary session IDs again. Clean up this disposable project with the
 same `down --volumes --remove-orphans` command shown above.
+
+## Cross-engine transaction
+
+`sql/03-cross-engine-transaction.sql` uses one MariaDB connection to modify
+InnoDB commerce state and the DuckDB-backed event table within the same
+transaction. Separate rollback and commit-control cases report each engine's
+state before, during, and after transaction completion without assuming that
+the engines have identical visibility or atomicity semantics.
+
+Choose a new project name before starting MariaDB and reuse the same `$project`
+value for startup, health checks, schema/seed loading, this execution, fresh
+connection verification, and cleanup. Run this script only after loading the
+unchanged schema and seed:
+
+```sh
+"$docker_bin" compose -p "$project" exec -T \
+  -e MYSQL_PWD="$MARIADB_ROOT_PASSWORD" mariadb \
+  mariadb --user=root commerce_analytics \
+  < experiments/sql/03-cross-engine-transaction.sql
+```
+
+The commit control deliberately leaves its temporary order, item, stock
+change, and event in the disposable database as evidence. Do not delete those
+rows individually; destroy the disposable project and volume after recording
+the fresh-connection result.
