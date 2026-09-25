@@ -53,3 +53,27 @@ project when finished:
 "$docker_bin" compose -p "$project" down --volumes --remove-orphans
 unset MARIADB_ROOT_PASSWORD MARIADB_DASHBOARD_PASSWORD
 ```
+
+## DuckDB-engine rollback
+
+`sql/02-duckdb-rollback.sql` asks whether the MariaDB DuckDB storage engine
+participates in transaction control for the existing `activity_events` table.
+It contains a rollback case and a separate commit control using different
+temporary events. The commit control is needed because an event that is
+invisible before `ROLLBACK` does not by itself demonstrate rollback semantics.
+The script reports each checkpoint and does not claim an outcome before
+execution.
+
+Use a new disposable Compose project and repeat the same health, schema, and
+seed commands above. After loading `sql/02-seed.sql`, execute:
+
+```sh
+project=duckdb-rollback-$(date +%s)
+"$docker_bin" compose -p "$project" exec -T \
+  -e MYSQL_PWD="$MARIADB_ROOT_PASSWORD" mariadb \
+  mariadb --user=root commerce_analytics < experiments/sql/02-duckdb-rollback.sql
+```
+
+Open a new MariaDB connection afterwards and query the total event count plus
+both temporary session IDs again. Clean up this disposable project with the
+same `down --volumes --remove-orphans` command shown above.
