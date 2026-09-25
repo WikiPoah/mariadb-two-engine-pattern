@@ -14,6 +14,9 @@ Each experiment separates three kinds of statements:
 Run experiments only against a disposable Compose project with a fresh named
 volume. Do not use the normal development volume.
 
+Validated observations and architectural findings are recorded in
+[results.md](results.md).
+
 ## InnoDB rollback
 
 `sql/01-innodb-rollback.sql` uses the seeded `commerce_analytics` database.
@@ -192,24 +195,8 @@ a new MariaDB connection. Do not delete experiment rows individually; destroy
 each disposable project and volume after its evidence is recorded.
 
 **Observation:** Record what each run actually reports and what the fresh
-connection observes. These instructions do not predict the database outcome.
-
-In the pinned experimental environment, the failure run's real `session_start`
-write succeeded and remained persisted. The deliberately failed later
-`product_view` caused `run_session()` to return `event_failure` with
-`checkout_calls=0`. No order or order item was added; Notebook stock remained
-98 and historical revenue remained EUR 38.00. DuckDB activity increased from
-11 to 12 because the successful session start remained persisted.
-
-From an independently restored deterministic fixture, the control run recorded
-a successful `session_start` and `product_view`, returned `purchased`, and
-reported `checkout_calls=1`. Orders increased from 3 to 4, order items from 4
-to 5, Notebook stock changed from 98 to 97, historical revenue from EUR 38.00
-to EUR 50.00, and DuckDB activity increased from 11 to 13.
-
-These are observations from the pinned environment, not claims of cross-engine
-atomicity, crash consistency, exactly-once semantics, or arbitrary failure
-recovery.
+connection observes. The validated failure and control results are recorded in
+[results.md](results.md#5-application-failure-boundary).
 
 **Interpretation:** Relate the observed result to the application's ordering of
 independent event writes and transactional checkout. This controlled experiment
