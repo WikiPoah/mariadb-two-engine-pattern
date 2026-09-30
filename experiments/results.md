@@ -35,6 +35,7 @@ the evidence was recorded.
 | Cross-engine transaction | What happens when one MariaDB transaction touches both engines? | Normal rollback discarded both engines' changes; normal commit persisted both. | The observation is useful evidence, but it is not a guarantee of cross-engine atomicity under failures. |
 | Integrity enforcement | Which declared constraints rejected the tested violations? | InnoDB rejected duplicate PK, FK, and `CHECK` violations. DuckDB accepted the tested duplicate declared PK and rejected the tested `CHECK` violation. | Authoritative integrity remains in InnoDB; DuckDB event IDs are not treated as uniqueness guarantees. |
 | Application failure boundary | Does an event-write failure prevent the normal simulator purchase path from reaching checkout? | A failed product view returned `event_failure`, called checkout zero times, and left InnoDB unchanged; the successful control purchased once. | Independent event writes may remain persisted, while checkout remains an InnoDB-only authority boundary. |
+| Separate analytical store freshness | How stale do analytical events become behind a periodic feed to a standalone store? | Five controlled runs observed a pooled median of 1100.525 ms and nearest-rank p95 of 2013.842 ms, with exact final reconciliation and convergence. | A separate analytical store introduces an explicit data movement and freshness boundary. |
 
 ## 1. InnoDB rollback
 
@@ -153,6 +154,121 @@ The two cases show that a preceding event-write failure prevents the normal
 simulator purchase path from reaching checkout, while an earlier independently
 successful event write can remain persisted. This is an application control-flow
 boundary, not cross-engine atomicity.
+
+## 6. Separate analytical store freshness
+
+### Purpose and configuration
+
+The Area 20 alternative architecture used the existing MariaDB server as the
+authoritative source, a periodic read-only feed, and a genuinely separate
+standalone DuckDB analytical store:
+
+```text
+MariaDB 12.3.3 source -> periodic feed -> standalone DuckDB destination
+```
+
+The MariaDB DuckDB storage engine remained active on the source for
+`activity_events`. Moving the analytical copy to another store introduced an
+explicit data movement and freshness boundary.
+
+Five independent runs started with fresh MariaDB state, the unchanged
+deterministic fixture, and a fresh standalone destination. Every run used:
+
+- simulator seed 17;
+- 20 sessions at a 0.1-second session interval;
+- a 2.0-second feed interval;
+- baseline event checkpoint 11 and order checkpoint 3.
+
+The retained evidence independently records 20 distinct measured
+`session_start` sessions, 67 measured events, and 5 committed orders per run.
+
+### Measurement and validity
+
+The experiment defines application-event-to-confirmed-analytical-visibility
+delay as:
+
+```text
+destination_visible_at(first_visible_batch) - activity_events.occurred_at
+```
+
+`activity_events.occurred_at` is generated in UTC by the application
+immediately before source insertion. It is not a MariaDB commit timestamp.
+`destination_visible_at` is captured immediately after the standalone DuckDB
+commit returns, making it a conservative upper bound on confirmed first
+visibility. This experiment does not measure commit-to-visibility latency,
+replication latency, or database commit lag.
+
+Every destination event retains its first-visible batch ID. Seed events at or
+below the baseline checkpoint are excluded. Missing visibility metadata and
+negative deltas are retained as invalid observations, with their reason and raw
+value where available, and excluded from statistics. Each run ended with exact
+controlled event/order reconciliation and convergence between the production
+source analytical queries and their standalone DuckDB equivalents.
+
+### Results
+
+| Run | Measured events | Invalid | Committed orders | Feed cycles | Median (ms) | Nearest-rank p95 (ms) | Maximum (ms) | Convergence | Reconciliation |
+|---:|---:|---:|---:|---:|---:|---:|---:|:---:|:---:|
+| 01 | 67 | 0 | 5 | 2 | 1077.843 | 2010.052 | 2017.273 | Yes | Yes |
+| 02 | 67 | 0 | 5 | 2 | 1103.486 | 2030.588 | 2037.122 | Yes | Yes |
+| 03 | 67 | 0 | 5 | 2 | 1105.441 | 2034.297 | 2040.065 | Yes | Yes |
+| 04 | 67 | 0 | 5 | 2 | 1100.389 | 2031.680 | 2038.503 | Yes | Yes |
+| 05 | 67 | 0 | 5 | 2 | 1083.154 | 2010.604 | 2018.578 | Yes | Yes |
+
+Pooling all 335 valid per-event observations produced:
+
+- median: 1100.525 ms;
+- nearest-rank p95: 2013.842 ms;
+- maximum: 2040.065 ms;
+- invalid observations: 0.
+
+The pooled p95 is the nearest-rank percentile calculated across all 335 event
+observations; it is not an average of the five per-run p95 values.
+
+Across the five runs, the per-run ranges were:
+
+| Statistic | Minimum (ms) | Maximum (ms) |
+|---|---:|---:|
+| Median | 1077.843 | 1105.441 |
+| Nearest-rank p95 | 2010.052 | 2034.297 |
+| Maximum | 2017.273 | 2040.065 |
+
+### Timing nuance
+
+In all five locked runs, both measured feed cycles completed after the
+simulator completed. The 20 sessions at 0.1-second spacing placed workload
+completion around the first two-second feed boundary: the simulator completed
+while the first feed was executing. That feed copied 64 events and 5 orders;
+the second scheduled feed copied the final 3 events and no orders. No cadence
+overrun or missed interval occurred.
+
+This timing does not change an event's measured delay to its first confirmed
+destination visibility. Separately, the gated harness integration test
+validated multiple feed cycles during an active simulator workload; its timing
+values are not included in this final evidence.
+
+### Interpretation and limits
+
+Under this controlled two-second periodic-feed configuration, the separate
+analytical store introduced an observed application-event-to-confirmed-
+analytical-visibility delay of approximately 1.10 seconds at the median, 2.01
+seconds at p95, and 2.04 seconds at maximum. All five runs eventually achieved
+exact controlled-record reconciliation and analytical convergence.
+
+A separate store can offer isolation and scaling benefits, but it requires a
+data movement mechanism and makes freshness an explicit architectural concern.
+These measurements do not establish production CDC performance, guaranteed
+consistency, or values that generalize beyond this controlled setup. They also
+do not establish that either architecture is universally faster or superior.
+
+The retained JSON files record session, event, and committed-order counts plus
+the complete visibility measurements, but not the simulator's internal outcome
+categories. The permanent evidence therefore reports only workload facts that
+can be independently recovered from those files.
+
+The unchanged raw evidence is retained under
+`experiments/separate_store/results/` as `staleness-run-01.json` through
+`staleness-run-05.json`.
 
 ## Architectural findings
 
