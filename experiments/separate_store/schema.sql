@@ -5,7 +5,9 @@ CREATE TABLE IF NOT EXISTS activity_events_copy (
     occurred_at TIMESTAMP NOT NULL,
     campaign_id INTEGER,
     product_id INTEGER,
+    first_visible_batch_id BIGINT NOT NULL,
     CHECK (event_type IN ('session_start', 'product_view')),
+    CHECK (first_visible_batch_id > 0),
     CHECK (
         (event_type = 'session_start' AND product_id IS NULL)
         OR (event_type = 'product_view' AND product_id IS NOT NULL)

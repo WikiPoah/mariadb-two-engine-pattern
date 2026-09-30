@@ -92,10 +92,10 @@ def run_feed_cycle(source, destination, *, clock=None) -> FeedCycle:
                 """
                 INSERT INTO activity_events_copy
                     (source_event_id, session_id, event_type, occurred_at,
-                     campaign_id, product_id)
-                VALUES (?, ?, ?, ?, ?, ?)
+                     campaign_id, product_id, first_visible_batch_id)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
                 """,
-                events,
+                [(*event, batch_id) for event in events],
             )
         if order_facts:
             destination.executemany(

@@ -176,6 +176,12 @@ class FeedTests(unittest.TestCase):
             ).fetchall(),
             [("product_view", 6), ("session_start", 5)],
         )
+        self.assertEqual(
+            self.destination.execute(
+                "SELECT DISTINCT first_visible_batch_id FROM activity_events_copy"
+            ).fetchall(),
+            [(1,)],
+        )
         self.assertEqual(self.count("order_facts"), 3)
         self.assertEqual(self.count("campaigns_snapshot"), 2)
         totals = self.destination.execute(
@@ -211,6 +217,14 @@ class FeedTests(unittest.TestCase):
                           result.campaigns_loaded), (2, 1, 3))
         self.assertEqual((result.event_checkpoint, result.order_checkpoint), (13, 4))
         self.assertEqual(self.count("activity_events_copy"), 13)
+        self.assertEqual(
+            self.destination.execute(
+                "SELECT source_event_id, first_visible_batch_id "
+                "FROM activity_events_copy WHERE source_event_id >= 12 "
+                "ORDER BY source_event_id"
+            ).fetchall(),
+            [(12, 2), (13, 2)],
+        )
         self.assertEqual(self.count("order_facts"), 4)
         self.assertEqual(
             self.destination.execute(
