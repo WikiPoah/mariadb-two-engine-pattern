@@ -202,3 +202,65 @@ connection observes. The validated failure and control results are recorded in
 independent event writes and transactional checkout. This controlled experiment
 does not prove crash consistency, cross-engine atomicity, exactly-once delivery,
 or recovery from arbitrary infrastructure failures.
+
+## Separate analytical store freshness
+
+**Question:** What freshness boundary appears when analytics move from the
+authoritative MariaDB server to a separate standalone DuckDB store through a
+periodic read-only feed?
+
+`separate_store/staleness.py` runs the production simulator while
+`separate_store/feed.py` periodically copies behavioural events, aggregated
+order facts, and the current campaign snapshot. Each copied event records the
+feed batch in which it first became visible. After the simulator stops, the
+harness continues feeding until exact controlled-record reconciliation and the
+source and destination analytical queries converge.
+
+The measured delay is:
+
+```text
+destination_visible_at(first_visible_batch) - activity_events.occurred_at
+```
+
+`occurred_at` is an application-generated UTC timestamp recorded immediately
+before the source insert; it is not a MariaDB commit timestamp.
+`destination_visible_at` is captured immediately after the standalone DuckDB
+commit returns, so it is a conservative upper bound on confirmed first
+visibility. The result is therefore an
+application-event-to-confirmed-analytical-visibility delay, not commit latency
+or replication latency.
+
+Run the harness only with a fresh MariaDB fixture and a destination path that
+does not already exist. Start a uniquely named disposable Compose project,
+wait for MariaDB health, and load `sql/01-schema.sql` and `sql/02-seed.sql` as
+shown for the earlier experiments. The following command uses the pinned
+Python base image and the existing experiment dependencies on the same internal
+Compose network:
+
+```sh
+container_id=$("$docker_bin" compose -p "$project" ps -q mariadb)
+network_name=$("$docker_bin" inspect --format \
+  '{{range $name, $settings := .NetworkSettings.Networks}}{{$name}}{{end}}' \
+  "$container_id")
+
+"$docker_bin" run --rm --network "$network_name" \
+  --volume "$PWD:/workspace" --workdir /workspace \
+  --env MARIADB_HOST=mariadb \
+  --env MARIADB_PORT=3306 \
+  --env MARIADB_DATABASE=commerce_analytics \
+  --env MARIADB_USER=root \
+  --env MARIADB_ROOT_PASSWORD \
+  --entrypoint sh \
+  python:3.13-slim-bookworm@sha256:ed86c82274b3c69b52fb5820f358f0bd7df0b603332063cb5c6e32bd220c3e6e \
+  -ec 'pip install --quiet -r dashboard/requirements.txt \
+    -r experiments/separate_store/requirements.txt && \
+    python -B -m experiments.separate_store.staleness \
+      --destination /tmp/staleness.duckdb \
+      --output /workspace/experiments/separate_store/results/staleness-run.json \
+      --seed 17 --sessions 20 --session-interval 0.1 --feed-interval 2.0'
+```
+
+Use a new output filename for every run; the harness refuses to reuse an
+existing destination. Destroy the disposable Compose project and volume after
+each run. The five retained controlled-run files and their audited results are
+recorded in [results.md](results.md#6-separate-analytical-store-freshness).
