@@ -13,8 +13,12 @@ pinned application and database configuration:
 | Behavioural table | `activity_events` on the MariaDB DuckDB storage engine |
 | Character handling | `utf8mb4` with `utf8mb4_bin` |
 
-Each disposable database was loaded from the unchanged deterministic schema and
-seed. Its relevant baseline was:
+The analytical benchmark below deliberately uses InnoDB for `activity_events`
+in its control schema; the other four tables remain InnoDB in both variants.
+
+The transaction, integrity, failure-boundary, and separate-store experiments
+used the unchanged deterministic application schema and seed. Their relevant
+baseline was:
 
 - 3 orders;
 - 4 order items;
@@ -36,6 +40,7 @@ the evidence was recorded.
 | Integrity enforcement | Which declared constraints rejected the tested violations? | InnoDB rejected duplicate PK, FK, and `CHECK` violations. DuckDB accepted the tested duplicate declared PK and rejected the tested `CHECK` violation. | Authoritative integrity remains in InnoDB; DuckDB event IDs are not treated as uniqueness guarantees. |
 | Application failure boundary | Does an event-write failure prevent the normal simulator purchase path from reaching checkout? | A failed product view returned `event_failure`, called checkout zero times, and left InnoDB unchanged; the successful control purchased once. | Independent event writes may remain persisted, while checkout remains an InnoDB-only authority boundary. |
 | Separate analytical store freshness | How stale do analytical events become behind a periodic feed to a standalone store? | Five controlled runs observed a pooled median of 1100.525 ms and nearest-rank p95 of 2013.842 ms, with exact final reconciliation and convergence. | A separate analytical store introduces an explicit data movement and freshness boundary. |
+| Analytical engine comparison | How do the same analytical queries compare with DuckDB-backed versus InnoDB-only activity tables on one server? | Two-engine medians were lower for activity overview and campaigns at both scales; InnoDB-only was lower for recent activity. | Storage-engine choice depends on the measured query workload. |
 
 ## 1. InnoDB rollback
 
@@ -270,6 +275,44 @@ The unchanged raw evidence is retained under
 `experiments/separate_store/results/` as `staleness-run-01.json` through
 `staleness-run-05.json`.
 
+## 7. Analytical engine comparison
+
+Two schemas on the same MariaDB server per run held identical generated
+commerce and activity data. The four commerce tables used InnoDB in both;
+`activity_events` used the MariaDB DuckDB engine in the two-engine variant and
+InnoDB in the control. Seed `17` produced 5,000 and 50,000-session datasets,
+with the smaller history an exact prefix of the larger one. The production
+activity overview, recent-activity `LIMIT 50`, and campaign queries were
+validated against both schemas before and after timing.
+
+| Query | 5k two-engine median (ms) | 5k InnoDB median (ms) | 5k ratio | 50k two-engine median (ms) | 50k InnoDB median (ms) | 50k ratio |
+|---|---:|---:|---:|---:|---:|---:|
+| Activity overview | 3.823 | 5.040 | 1.318 | 19.970 | 62.879 | 3.149 |
+| Recent activity | 3.250 | 0.537 | 0.165 | 7.239 | 0.661 | 0.091 |
+| Campaign performance | 10.595 | 23.226 | 2.192 | 48.819 | 241.528 | 4.947 |
+
+The ratio is InnoDB-only median divided by two-engine median. The median
+change between the two tested scales was:
+
+| Query | Two-engine 50k/5k | InnoDB-only 50k/5k |
+|---|---:|---:|
+| Activity overview | 5.224× | 12.477× |
+| Recent activity | 2.227× | 1.231× |
+| Campaign performance | 4.608× | 10.399× |
+
+For these warm-cache configurations, the two-engine variant had lower medians
+for the activity aggregate and campaign analysis; its ratio rose at the larger
+dataset. InnoDB-only had a substantially lower median for the indexed recent
+lookup at both scales. Each summary has 20 measured executions per query and
+variant. These descriptive comparisons do not establish statistical
+significance, general engine superiority, or behaviour at other scales and
+hardware.
+
+The [benchmark method, full summaries, and unchanged raw JSON
+evidence](analytical_benchmark/README.md) record the environment, SQL, indexes,
+sample timings, and correctness checks. This same-server query-time comparison
+answers a different question from the separate-store freshness experiment above.
+
 ## Architectural findings
 
 ### Observed in the pinned environment
@@ -283,6 +326,8 @@ The unchanged raw evidence is retained under
   rejected the tested event `CHECK` violation.
 - The application stopped before checkout after the controlled product-view
   failure, while the earlier session-start event remained persisted.
+- The tested analytical aggregates had lower two-engine medians, while the
+  indexed recent-activity query had a lower InnoDB-only median.
 
 ### Architectural interpretation
 
@@ -296,6 +341,8 @@ The unchanged raw evidence is retained under
   prevents checkout.
 - The application should not depend on a cross-engine transaction as its
   checkout integrity boundary.
+- Analytical table placement should follow the query mix observed for this
+  application rather than an assumed engine-wide performance ranking.
 
 ### Limitations
 
@@ -306,4 +353,4 @@ These experiments do not establish:
 - exactly-once delivery;
 - recovery from arbitrary failures;
 - universal behaviour across MariaDB or DuckDB storage-engine versions;
-- performance superiority of either architecture.
+- universal performance superiority of either architecture.

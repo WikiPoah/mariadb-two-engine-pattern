@@ -264,3 +264,13 @@ Use a new output filename for every run; the harness refuses to reuse an
 existing destination. Destroy the disposable Compose project and volume after
 each run. The five retained controlled-run files and their audited results are
 recorded in [results.md](results.md#6-separate-analytical-store-freshness).
+
+## Same-server analytical engine comparison
+
+The [analytical benchmark](analytical_benchmark/README.md) compares the same
+production queries with `activity_events` on the MariaDB DuckDB engine or on
+InnoDB, while both variants remain on one MariaDB server. It includes the
+method, reproduction commands, and retained 5,000- and 50,000-session JSON
+evidence. The concise findings are in
+[results.md](results.md#7-analytical-engine-comparison). This measures query
+latency; the separate-store experiment above measures feed freshness.

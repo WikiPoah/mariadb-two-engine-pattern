@@ -1,0 +1,2674 @@
+{
+  "correctness": {
+    "measured_result_digests_match_across_repetitions_and_variants": true,
+    "post_measurement": {
+      "mismatches": [],
+      "scales": {
+        "50000": {
+          "query_mismatches": [],
+          "variants": {
+            "innodb_only": {
+              "analytics": {
+                "campaigns": {
+                  "rows": 3,
+                  "sha256": "31ccdd181796984016ba0c96318fec61836ff629e6cfd12e6728f950f29cd5dd"
+                },
+                "overview": {
+                  "rows": 1,
+                  "sha256": "8a5a861b39ed28a7d009b62c0be2381b5b2fcd7a164a2d1486795a209b4b6a7b"
+                },
+                "recent_activity": {
+                  "rows": 50,
+                  "sha256": "014532778946743fefd6978cb990db21c87347bff2bcfa665ba2a8c3061306b6"
+                }
+              },
+              "contents": {
+                "activity_events": {
+                  "actual_rows": 174868,
+                  "actual_sha256": "1af9e411d22f1aedf4b443e4713132fea79f3157bfe2e2946b031226851dc65c",
+                  "expected_rows": 174868,
+                  "expected_sha256": "1af9e411d22f1aedf4b443e4713132fea79f3157bfe2e2946b031226851dc65c",
+                  "matches": true
+                },
+                "campaigns": {
+                  "actual_rows": 2,
+                  "actual_sha256": "d2b89f594ed4ebdac9700a8547adfda793cc2451d8804bac9c92102b1895773b",
+                  "expected_rows": 2,
+                  "expected_sha256": "d2b89f594ed4ebdac9700a8547adfda793cc2451d8804bac9c92102b1895773b",
+                  "matches": true
+                },
+                "order_items": {
+                  "actual_rows": 13244,
+                  "actual_sha256": "8c0d1dde3a62c8b969601af634e62e13138e089b4e0096f116a064767a5f4b0e",
+                  "expected_rows": 13244,
+                  "expected_sha256": "8c0d1dde3a62c8b969601af634e62e13138e089b4e0096f116a064767a5f4b0e",
+                  "matches": true
+                },
+                "orders": {
+                  "actual_rows": 10064,
+                  "actual_sha256": "9cb6293aa39fd3fdfa009ea10bc1634c0946a73b5ed721ef4218c8f90110c541",
+                  "expected_rows": 10064,
+                  "expected_sha256": "9cb6293aa39fd3fdfa009ea10bc1634c0946a73b5ed721ef4218c8f90110c541",
+                  "matches": true
+                },
+                "products": {
+                  "actual_rows": 3,
+                  "actual_sha256": "335c6c7d67eaee7d347bbef69fca9e22809e38ec60dbfcf5faf1c2f1864fa9e9",
+                  "expected_rows": 3,
+                  "expected_sha256": "335c6c7d67eaee7d347bbef69fca9e22809e38ec60dbfcf5faf1c2f1864fa9e9",
+                  "matches": true
+                }
+              },
+              "database": "analytical_bench_50000_innodb_only",
+              "engines": {
+                "activity_events": "InnoDB",
+                "campaigns": "InnoDB",
+                "order_items": "InnoDB",
+                "orders": "InnoDB",
+                "products": "InnoDB"
+              },
+              "mismatches": []
+            },
+            "two_engine": {
+              "analytics": {
+                "campaigns": {
+                  "rows": 3,
+                  "sha256": "31ccdd181796984016ba0c96318fec61836ff629e6cfd12e6728f950f29cd5dd"
+                },
+                "overview": {
+                  "rows": 1,
+                  "sha256": "8a5a861b39ed28a7d009b62c0be2381b5b2fcd7a164a2d1486795a209b4b6a7b"
+                },
+                "recent_activity": {
+                  "rows": 50,
+                  "sha256": "014532778946743fefd6978cb990db21c87347bff2bcfa665ba2a8c3061306b6"
+                }
+              },
+              "contents": {
+                "activity_events": {
+                  "actual_rows": 174868,
+                  "actual_sha256": "1af9e411d22f1aedf4b443e4713132fea79f3157bfe2e2946b031226851dc65c",
+                  "expected_rows": 174868,
+                  "expected_sha256": "1af9e411d22f1aedf4b443e4713132fea79f3157bfe2e2946b031226851dc65c",
+                  "matches": true
+                },
+                "campaigns": {
+                  "actual_rows": 2,
+                  "actual_sha256": "d2b89f594ed4ebdac9700a8547adfda793cc2451d8804bac9c92102b1895773b",
+                  "expected_rows": 2,
+                  "expected_sha256": "d2b89f594ed4ebdac9700a8547adfda793cc2451d8804bac9c92102b1895773b",
+                  "matches": true
+                },
+                "order_items": {
+                  "actual_rows": 13244,
+                  "actual_sha256": "8c0d1dde3a62c8b969601af634e62e13138e089b4e0096f116a064767a5f4b0e",
+                  "expected_rows": 13244,
+                  "expected_sha256": "8c0d1dde3a62c8b969601af634e62e13138e089b4e0096f116a064767a5f4b0e",
+                  "matches": true
+                },
+                "orders": {
+                  "actual_rows": 10064,
+                  "actual_sha256": "9cb6293aa39fd3fdfa009ea10bc1634c0946a73b5ed721ef4218c8f90110c541",
+                  "expected_rows": 10064,
+                  "expected_sha256": "9cb6293aa39fd3fdfa009ea10bc1634c0946a73b5ed721ef4218c8f90110c541",
+                  "matches": true
+                },
+                "products": {
+                  "actual_rows": 3,
+                  "actual_sha256": "335c6c7d67eaee7d347bbef69fca9e22809e38ec60dbfcf5faf1c2f1864fa9e9",
+                  "expected_rows": 3,
+                  "expected_sha256": "335c6c7d67eaee7d347bbef69fca9e22809e38ec60dbfcf5faf1c2f1864fa9e9",
+                  "matches": true
+                }
+              },
+              "database": "analytical_bench_50000_two_engine",
+              "engines": {
+                "activity_events": "DUCKDB",
+                "campaigns": "InnoDB",
+                "order_items": "InnoDB",
+                "orders": "InnoDB",
+                "products": "InnoDB"
+              },
+              "mismatches": []
+            }
+          }
+        }
+      },
+      "valid": true
+    },
+    "pre_measurement": {
+      "mismatches": [],
+      "scales": {
+        "50000": {
+          "query_mismatches": [],
+          "variants": {
+            "innodb_only": {
+              "analytics": {
+                "campaigns": {
+                  "rows": 3,
+                  "sha256": "31ccdd181796984016ba0c96318fec61836ff629e6cfd12e6728f950f29cd5dd"
+                },
+                "overview": {
+                  "rows": 1,
+                  "sha256": "8a5a861b39ed28a7d009b62c0be2381b5b2fcd7a164a2d1486795a209b4b6a7b"
+                },
+                "recent_activity": {
+                  "rows": 50,
+                  "sha256": "014532778946743fefd6978cb990db21c87347bff2bcfa665ba2a8c3061306b6"
+                }
+              },
+              "contents": {
+                "activity_events": {
+                  "actual_rows": 174868,
+                  "actual_sha256": "1af9e411d22f1aedf4b443e4713132fea79f3157bfe2e2946b031226851dc65c",
+                  "expected_rows": 174868,
+                  "expected_sha256": "1af9e411d22f1aedf4b443e4713132fea79f3157bfe2e2946b031226851dc65c",
+                  "matches": true
+                },
+                "campaigns": {
+                  "actual_rows": 2,
+                  "actual_sha256": "d2b89f594ed4ebdac9700a8547adfda793cc2451d8804bac9c92102b1895773b",
+                  "expected_rows": 2,
+                  "expected_sha256": "d2b89f594ed4ebdac9700a8547adfda793cc2451d8804bac9c92102b1895773b",
+                  "matches": true
+                },
+                "order_items": {
+                  "actual_rows": 13244,
+                  "actual_sha256": "8c0d1dde3a62c8b969601af634e62e13138e089b4e0096f116a064767a5f4b0e",
+                  "expected_rows": 13244,
+                  "expected_sha256": "8c0d1dde3a62c8b969601af634e62e13138e089b4e0096f116a064767a5f4b0e",
+                  "matches": true
+                },
+                "orders": {
+                  "actual_rows": 10064,
+                  "actual_sha256": "9cb6293aa39fd3fdfa009ea10bc1634c0946a73b5ed721ef4218c8f90110c541",
+                  "expected_rows": 10064,
+                  "expected_sha256": "9cb6293aa39fd3fdfa009ea10bc1634c0946a73b5ed721ef4218c8f90110c541",
+                  "matches": true
+                },
+                "products": {
+                  "actual_rows": 3,
+                  "actual_sha256": "335c6c7d67eaee7d347bbef69fca9e22809e38ec60dbfcf5faf1c2f1864fa9e9",
+                  "expected_rows": 3,
+                  "expected_sha256": "335c6c7d67eaee7d347bbef69fca9e22809e38ec60dbfcf5faf1c2f1864fa9e9",
+                  "matches": true
+                }
+              },
+              "database": "analytical_bench_50000_innodb_only",
+              "engines": {
+                "activity_events": "InnoDB",
+                "campaigns": "InnoDB",
+                "order_items": "InnoDB",
+                "orders": "InnoDB",
+                "products": "InnoDB"
+              },
+              "mismatches": []
+            },
+            "two_engine": {
+              "analytics": {
+                "campaigns": {
+                  "rows": 3,
+                  "sha256": "31ccdd181796984016ba0c96318fec61836ff629e6cfd12e6728f950f29cd5dd"
+                },
+                "overview": {
+                  "rows": 1,
+                  "sha256": "8a5a861b39ed28a7d009b62c0be2381b5b2fcd7a164a2d1486795a209b4b6a7b"
+                },
+                "recent_activity": {
+                  "rows": 50,
+                  "sha256": "014532778946743fefd6978cb990db21c87347bff2bcfa665ba2a8c3061306b6"
+                }
+              },
+              "contents": {
+                "activity_events": {
+                  "actual_rows": 174868,
+                  "actual_sha256": "1af9e411d22f1aedf4b443e4713132fea79f3157bfe2e2946b031226851dc65c",
+                  "expected_rows": 174868,
+                  "expected_sha256": "1af9e411d22f1aedf4b443e4713132fea79f3157bfe2e2946b031226851dc65c",
+                  "matches": true
+                },
+                "campaigns": {
+                  "actual_rows": 2,
+                  "actual_sha256": "d2b89f594ed4ebdac9700a8547adfda793cc2451d8804bac9c92102b1895773b",
+                  "expected_rows": 2,
+                  "expected_sha256": "d2b89f594ed4ebdac9700a8547adfda793cc2451d8804bac9c92102b1895773b",
+                  "matches": true
+                },
+                "order_items": {
+                  "actual_rows": 13244,
+                  "actual_sha256": "8c0d1dde3a62c8b969601af634e62e13138e089b4e0096f116a064767a5f4b0e",
+                  "expected_rows": 13244,
+                  "expected_sha256": "8c0d1dde3a62c8b969601af634e62e13138e089b4e0096f116a064767a5f4b0e",
+                  "matches": true
+                },
+                "orders": {
+                  "actual_rows": 10064,
+                  "actual_sha256": "9cb6293aa39fd3fdfa009ea10bc1634c0946a73b5ed721ef4218c8f90110c541",
+                  "expected_rows": 10064,
+                  "expected_sha256": "9cb6293aa39fd3fdfa009ea10bc1634c0946a73b5ed721ef4218c8f90110c541",
+                  "matches": true
+                },
+                "products": {
+                  "actual_rows": 3,
+                  "actual_sha256": "335c6c7d67eaee7d347bbef69fca9e22809e38ec60dbfcf5faf1c2f1864fa9e9",
+                  "expected_rows": 3,
+                  "expected_sha256": "335c6c7d67eaee7d347bbef69fca9e22809e38ec60dbfcf5faf1c2f1864fa9e9",
+                  "matches": true
+                }
+              },
+              "database": "analytical_bench_50000_two_engine",
+              "engines": {
+                "activity_events": "DUCKDB",
+                "campaigns": "InnoDB",
+                "order_items": "InnoDB",
+                "orders": "InnoDB",
+                "products": "InnoDB"
+              },
+              "mismatches": []
+            }
+          }
+        }
+      },
+      "valid": true
+    }
+  },
+  "diagnostics": {
+    "innodb_only": {
+      "explain": {
+        "campaigns": [
+          {
+            "Extra": "Using temporary; Using filesort",
+            "id": 1,
+            "key": null,
+            "key_len": null,
+            "possible_keys": null,
+            "ref": null,
+            "rows": "43522",
+            "select_type": "PRIMARY",
+            "table": "<derived2>",
+            "type": "ALL"
+          },
+          {
+            "Extra": "Using where",
+            "id": 1,
+            "key": "PRIMARY",
+            "key_len": "4",
+            "possible_keys": "PRIMARY",
+            "ref": "s.campaign_id",
+            "rows": "1",
+            "select_type": "PRIMARY",
+            "table": "c",
+            "type": "eq_ref"
+          },
+          {
+            "Extra": "",
+            "id": 1,
+            "key": "uq_order_session",
+            "key_len": "144",
+            "possible_keys": "uq_order_session",
+            "ref": "s.session_id",
+            "rows": "1",
+            "select_type": "PRIMARY",
+            "table": "o",
+            "type": "eq_ref"
+          },
+          {
+            "Extra": "Using where",
+            "id": 1,
+            "key": "key0",
+            "key_len": "9",
+            "possible_keys": "key0",
+            "ref": "analytical_bench_50000_innodb_only.o.order_id",
+            "rows": "1",
+            "select_type": "PRIMARY",
+            "table": "<derived3>",
+            "type": "ref"
+          },
+          {
+            "Extra": "Using index; Using filesort",
+            "id": 2,
+            "key": "idx_activity_recent",
+            "key_len": "244",
+            "possible_keys": null,
+            "ref": null,
+            "rows": "174090",
+            "select_type": "DERIVED",
+            "table": "activity_events",
+            "type": "index"
+          },
+          {
+            "Extra": "",
+            "id": 3,
+            "key": "PRIMARY",
+            "key_len": "12",
+            "possible_keys": "PRIMARY",
+            "ref": null,
+            "rows": "13244",
+            "select_type": "DERIVED",
+            "table": "order_items",
+            "type": "index"
+          }
+        ],
+        "overview_activity": [
+          {
+            "Extra": "Using index",
+            "id": 1,
+            "key": "idx_activity_recent",
+            "key_len": "244",
+            "possible_keys": null,
+            "ref": null,
+            "rows": "174090",
+            "select_type": "SIMPLE",
+            "table": "activity_events",
+            "type": "index"
+          }
+        ],
+        "recent_activity": [
+          {
+            "Extra": "Using index",
+            "id": 1,
+            "key": "idx_activity_recent",
+            "key_len": "244",
+            "possible_keys": null,
+            "ref": null,
+            "rows": "50",
+            "select_type": "SIMPLE",
+            "table": "activity_events",
+            "type": "index"
+          }
+        ]
+      },
+      "indexes": [
+        {
+          "Cardinality": 174090,
+          "Collation": "A",
+          "Column_name": "event_id",
+          "Comment": "",
+          "Ignored": "NO",
+          "Index_comment": "",
+          "Index_type": "BTREE",
+          "Key_name": "PRIMARY",
+          "Non_unique": 0,
+          "Null": "",
+          "Packed": null,
+          "Seq_in_index": 1,
+          "Sub_part": null,
+          "Table": "activity_events"
+        },
+        {
+          "Cardinality": 43522,
+          "Collation": "A",
+          "Column_name": "session_id",
+          "Comment": "",
+          "Ignored": "NO",
+          "Index_comment": "",
+          "Index_type": "BTREE",
+          "Key_name": "idx_activity_session",
+          "Non_unique": 1,
+          "Null": "",
+          "Packed": null,
+          "Seq_in_index": 1,
+          "Sub_part": null,
+          "Table": "activity_events"
+        },
+        {
+          "Cardinality": 174090,
+          "Collation": "D",
+          "Column_name": "occurred_at",
+          "Comment": "",
+          "Ignored": "NO",
+          "Index_comment": "",
+          "Index_type": "BTREE",
+          "Key_name": "idx_activity_recent",
+          "Non_unique": 1,
+          "Null": "",
+          "Packed": null,
+          "Seq_in_index": 1,
+          "Sub_part": null,
+          "Table": "activity_events"
+        },
+        {
+          "Cardinality": 174090,
+          "Collation": "A",
+          "Column_name": "session_id",
+          "Comment": "",
+          "Ignored": "NO",
+          "Index_comment": "",
+          "Index_type": "BTREE",
+          "Key_name": "idx_activity_recent",
+          "Non_unique": 1,
+          "Null": "",
+          "Packed": null,
+          "Seq_in_index": 2,
+          "Sub_part": null,
+          "Table": "activity_events"
+        },
+        {
+          "Cardinality": 174090,
+          "Collation": "A",
+          "Column_name": "event_type",
+          "Comment": "",
+          "Ignored": "NO",
+          "Index_comment": "",
+          "Index_type": "BTREE",
+          "Key_name": "idx_activity_recent",
+          "Non_unique": 1,
+          "Null": "",
+          "Packed": null,
+          "Seq_in_index": 3,
+          "Sub_part": null,
+          "Table": "activity_events"
+        },
+        {
+          "Cardinality": 174090,
+          "Collation": "A",
+          "Column_name": "campaign_id",
+          "Comment": "",
+          "Ignored": "NO",
+          "Index_comment": "",
+          "Index_type": "BTREE",
+          "Key_name": "idx_activity_recent",
+          "Non_unique": 1,
+          "Null": "YES",
+          "Packed": null,
+          "Seq_in_index": 4,
+          "Sub_part": null,
+          "Table": "activity_events"
+        },
+        {
+          "Cardinality": 174090,
+          "Collation": "A",
+          "Column_name": "product_id",
+          "Comment": "",
+          "Ignored": "NO",
+          "Index_comment": "",
+          "Index_type": "BTREE",
+          "Key_name": "idx_activity_recent",
+          "Non_unique": 1,
+          "Null": "YES",
+          "Packed": null,
+          "Seq_in_index": 5,
+          "Sub_part": null,
+          "Table": "activity_events"
+        }
+      ]
+    },
+    "two_engine": {
+      "explain": {
+        "campaigns": [
+          {
+            "Extra": "Using temporary; Using filesort",
+            "id": 1,
+            "key": null,
+            "key_len": null,
+            "possible_keys": null,
+            "ref": null,
+            "rows": "10",
+            "select_type": "PRIMARY",
+            "table": "<derived2>",
+            "type": "ALL"
+          },
+          {
+            "Extra": "Using where",
+            "id": 1,
+            "key": "PRIMARY",
+            "key_len": "4",
+            "possible_keys": "PRIMARY",
+            "ref": "s.campaign_id",
+            "rows": "1",
+            "select_type": "PRIMARY",
+            "table": "c",
+            "type": "eq_ref"
+          },
+          {
+            "Extra": "",
+            "id": 1,
+            "key": "uq_order_session",
+            "key_len": "144",
+            "possible_keys": "uq_order_session",
+            "ref": "s.session_id",
+            "rows": "1",
+            "select_type": "PRIMARY",
+            "table": "o",
+            "type": "eq_ref"
+          },
+          {
+            "Extra": "Using where",
+            "id": 1,
+            "key": "key0",
+            "key_len": "9",
+            "possible_keys": "key0",
+            "ref": "analytical_bench_50000_two_engine.o.order_id",
+            "rows": "1",
+            "select_type": "PRIMARY",
+            "table": "<derived3>",
+            "type": "ref"
+          },
+          {
+            "Extra": "Using filesort",
+            "id": 2,
+            "key": null,
+            "key_len": null,
+            "possible_keys": null,
+            "ref": null,
+            "rows": "10",
+            "select_type": "DERIVED",
+            "table": "activity_events",
+            "type": "ALL"
+          },
+          {
+            "Extra": "",
+            "id": 3,
+            "key": "PRIMARY",
+            "key_len": "8",
+            "possible_keys": "PRIMARY",
+            "ref": "analytical_bench_50000_two_engine.o.order_id",
+            "rows": "1",
+            "select_type": "LATERAL DERIVED",
+            "table": "order_items",
+            "type": "ref"
+          }
+        ],
+        "overview_activity": [
+          {
+            "Extra": "",
+            "id": 1,
+            "key": null,
+            "key_len": null,
+            "possible_keys": null,
+            "ref": null,
+            "rows": "10",
+            "select_type": "SIMPLE",
+            "table": "activity_events",
+            "type": "ALL"
+          }
+        ],
+        "recent_activity": [
+          {
+            "Extra": "Using filesort",
+            "id": 1,
+            "key": null,
+            "key_len": null,
+            "possible_keys": null,
+            "ref": null,
+            "rows": "10",
+            "select_type": "SIMPLE",
+            "table": "activity_events",
+            "type": "ALL"
+          }
+        ]
+      },
+      "indexes": [
+        {
+          "Cardinality": null,
+          "Collation": null,
+          "Column_name": "event_id",
+          "Comment": "",
+          "Ignored": "NO",
+          "Index_comment": "",
+          "Index_type": "HASH",
+          "Key_name": "PRIMARY",
+          "Non_unique": 0,
+          "Null": "",
+          "Packed": null,
+          "Seq_in_index": 1,
+          "Sub_part": null,
+          "Table": "activity_events"
+        }
+      ]
+    }
+  },
+  "environment": {
+    "container_limits": {
+      "cpu_max_cgroup_v2": "max 100000",
+      "memory_max_cgroup_v2": "max"
+    },
+    "host_architecture": "arm64",
+    "pymysql_version": "1.2.0",
+    "python_version": "3.13.15 (main, Aug 31 2026, 23:46:42) [GCC 12.2.0]",
+    "runner_container_architecture": "aarch64",
+    "variants": {
+      "innodb_only": {
+        "database": "analytical_bench_50000_innodb_only",
+        "mariadb": {
+          "compile_machine": "aarch64",
+          "compile_os": "debian-linux-gnu",
+          "global_variables": [
+            {
+              "Value": "134217728",
+              "Variable_name": "innodb_buffer_pool_size"
+            },
+            {
+              "Value": "index_merge=on,index_merge_union=on,index_merge_sort_union=on,index_merge_intersection=on,index_merge_sort_intersection=off,index_condition_pushdown=on,derived_merge=on,derived_with_keys=on,firstmatch=on,loosescan=on,duplicateweedout=on,materialization=on,in_to_exists=on,semijoin=on,partial_match_rowid_merge=on,partial_match_table_scan=on,subquery_cache=on,mrr=off,mrr_cost_based=off,mrr_sort_keys=off,outer_join_with_cache=on,semijoin_with_cache=on,join_cache_incremental=on,join_cache_hashed=on,join_cache_bka=on,optimize_join_buffer_size=on,table_elimination=on,extended_keys=on,exists_to_in=on,orderby_uses_equalities=on,condition_pushdown_for_derived=on,split_materialized=on,condition_pushdown_for_subquery=on,rowid_filter=on,condition_pushdown_from_having=on,not_null_range_scan=off,hash_join_cardinality=on,cset_narrowing=on,sargable_casefold=on,reorder_outer_joins=off",
+              "Variable_name": "optimizer_switch"
+            },
+            {
+              "Value": "1048576",
+              "Variable_name": "query_cache_size"
+            },
+            {
+              "Value": "OFF",
+              "Variable_name": "query_cache_type"
+            }
+          ],
+          "plugins": [
+            {
+              "PLUGIN_LIBRARY": "ha_duckdb.so",
+              "PLUGIN_NAME": "DUCKDB",
+              "PLUGIN_STATUS": "ACTIVE",
+              "PLUGIN_VERSION": "1.0"
+            },
+            {
+              "PLUGIN_LIBRARY": "ha_duckdb.so",
+              "PLUGIN_NAME": "RUN_IN_DUCKDB",
+              "PLUGIN_STATUS": "ACTIVE",
+              "PLUGIN_VERSION": "1.0"
+            }
+          ],
+          "version": "12.3.3-MariaDB-ubu2404",
+          "version_comment": "mariadb.org binary distribution"
+        },
+        "session_variables": [
+          {
+            "Value": "index_merge=on,index_merge_union=on,index_merge_sort_union=on,index_merge_intersection=on,index_merge_sort_intersection=off,index_condition_pushdown=on,derived_merge=on,derived_with_keys=on,firstmatch=on,loosescan=on,duplicateweedout=on,materialization=on,in_to_exists=on,semijoin=on,partial_match_rowid_merge=on,partial_match_table_scan=on,subquery_cache=on,mrr=off,mrr_cost_based=off,mrr_sort_keys=off,outer_join_with_cache=on,semijoin_with_cache=on,join_cache_incremental=on,join_cache_hashed=on,join_cache_bka=on,optimize_join_buffer_size=on,table_elimination=on,extended_keys=on,exists_to_in=on,orderby_uses_equalities=on,condition_pushdown_for_derived=on,split_materialized=on,condition_pushdown_for_subquery=on,rowid_filter=on,condition_pushdown_from_having=on,not_null_range_scan=off,hash_join_cardinality=on,cset_narrowing=on,sargable_casefold=on,reorder_outer_joins=off",
+            "Variable_name": "optimizer_switch"
+          },
+          {
+            "Value": "OFF",
+            "Variable_name": "query_cache_type"
+          },
+          {
+            "Value": "+00:00",
+            "Variable_name": "time_zone"
+          }
+        ]
+      },
+      "two_engine": {
+        "database": "analytical_bench_50000_two_engine",
+        "mariadb": {
+          "compile_machine": "aarch64",
+          "compile_os": "debian-linux-gnu",
+          "global_variables": [
+            {
+              "Value": "134217728",
+              "Variable_name": "innodb_buffer_pool_size"
+            },
+            {
+              "Value": "index_merge=on,index_merge_union=on,index_merge_sort_union=on,index_merge_intersection=on,index_merge_sort_intersection=off,index_condition_pushdown=on,derived_merge=on,derived_with_keys=on,firstmatch=on,loosescan=on,duplicateweedout=on,materialization=on,in_to_exists=on,semijoin=on,partial_match_rowid_merge=on,partial_match_table_scan=on,subquery_cache=on,mrr=off,mrr_cost_based=off,mrr_sort_keys=off,outer_join_with_cache=on,semijoin_with_cache=on,join_cache_incremental=on,join_cache_hashed=on,join_cache_bka=on,optimize_join_buffer_size=on,table_elimination=on,extended_keys=on,exists_to_in=on,orderby_uses_equalities=on,condition_pushdown_for_derived=on,split_materialized=on,condition_pushdown_for_subquery=on,rowid_filter=on,condition_pushdown_from_having=on,not_null_range_scan=off,hash_join_cardinality=on,cset_narrowing=on,sargable_casefold=on,reorder_outer_joins=off",
+              "Variable_name": "optimizer_switch"
+            },
+            {
+              "Value": "1048576",
+              "Variable_name": "query_cache_size"
+            },
+            {
+              "Value": "OFF",
+              "Variable_name": "query_cache_type"
+            }
+          ],
+          "plugins": [
+            {
+              "PLUGIN_LIBRARY": "ha_duckdb.so",
+              "PLUGIN_NAME": "DUCKDB",
+              "PLUGIN_STATUS": "ACTIVE",
+              "PLUGIN_VERSION": "1.0"
+            },
+            {
+              "PLUGIN_LIBRARY": "ha_duckdb.so",
+              "PLUGIN_NAME": "RUN_IN_DUCKDB",
+              "PLUGIN_STATUS": "ACTIVE",
+              "PLUGIN_VERSION": "1.0"
+            }
+          ],
+          "version": "12.3.3-MariaDB-ubu2404",
+          "version_comment": "mariadb.org binary distribution"
+        },
+        "session_variables": [
+          {
+            "Value": "index_merge=on,index_merge_union=on,index_merge_sort_union=on,index_merge_intersection=on,index_merge_sort_intersection=off,index_condition_pushdown=on,derived_merge=on,derived_with_keys=on,firstmatch=on,loosescan=on,duplicateweedout=on,materialization=on,in_to_exists=on,semijoin=on,partial_match_rowid_merge=on,partial_match_table_scan=on,subquery_cache=on,mrr=off,mrr_cost_based=off,mrr_sort_keys=off,outer_join_with_cache=on,semijoin_with_cache=on,join_cache_incremental=on,join_cache_hashed=on,join_cache_bka=on,optimize_join_buffer_size=on,table_elimination=on,extended_keys=on,exists_to_in=on,orderby_uses_equalities=on,condition_pushdown_for_derived=on,split_materialized=on,condition_pushdown_for_subquery=on,rowid_filter=on,condition_pushdown_from_having=on,not_null_range_scan=off,hash_join_cardinality=on,cset_narrowing=on,sargable_casefold=on,reorder_outer_joins=off",
+            "Variable_name": "optimizer_switch"
+          },
+          {
+            "Value": "OFF",
+            "Variable_name": "query_cache_type"
+          },
+          {
+            "Value": "+00:00",
+            "Variable_name": "time_zone"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "benchmark_seed": 17,
+    "generated_dataset_sha256": "29629ac545659fa802f4557d414c2107797f11ad5d86231681fc48be499b01e5",
+    "git": {
+      "commit": null,
+      "working_tree_dirty": null
+    },
+    "logical_row_counts": {
+      "activity_events": 174868,
+      "campaigns": 2,
+      "order_items": 13244,
+      "orders": 10064,
+      "products": 3
+    },
+    "method_schema_version": "1.0",
+    "run_started_at": "2026-10-10T20:41:32.471309+00:00",
+    "scale": 50000
+  },
+  "method": {
+    "cache_interpretation": "warm-cache; MariaDB query cache disabled per session",
+    "connection_policy": "one persistent connection per variant for this scale",
+    "indexes_by_variant": {
+      "innodb_only": [
+        {
+          "Cardinality": 174090,
+          "Collation": "A",
+          "Column_name": "event_id",
+          "Comment": "",
+          "Ignored": "NO",
+          "Index_comment": "",
+          "Index_type": "BTREE",
+          "Key_name": "PRIMARY",
+          "Non_unique": 0,
+          "Null": "",
+          "Packed": null,
+          "Seq_in_index": 1,
+          "Sub_part": null,
+          "Table": "activity_events"
+        },
+        {
+          "Cardinality": 43522,
+          "Collation": "A",
+          "Column_name": "session_id",
+          "Comment": "",
+          "Ignored": "NO",
+          "Index_comment": "",
+          "Index_type": "BTREE",
+          "Key_name": "idx_activity_session",
+          "Non_unique": 1,
+          "Null": "",
+          "Packed": null,
+          "Seq_in_index": 1,
+          "Sub_part": null,
+          "Table": "activity_events"
+        },
+        {
+          "Cardinality": 174090,
+          "Collation": "D",
+          "Column_name": "occurred_at",
+          "Comment": "",
+          "Ignored": "NO",
+          "Index_comment": "",
+          "Index_type": "BTREE",
+          "Key_name": "idx_activity_recent",
+          "Non_unique": 1,
+          "Null": "",
+          "Packed": null,
+          "Seq_in_index": 1,
+          "Sub_part": null,
+          "Table": "activity_events"
+        },
+        {
+          "Cardinality": 174090,
+          "Collation": "A",
+          "Column_name": "session_id",
+          "Comment": "",
+          "Ignored": "NO",
+          "Index_comment": "",
+          "Index_type": "BTREE",
+          "Key_name": "idx_activity_recent",
+          "Non_unique": 1,
+          "Null": "",
+          "Packed": null,
+          "Seq_in_index": 2,
+          "Sub_part": null,
+          "Table": "activity_events"
+        },
+        {
+          "Cardinality": 174090,
+          "Collation": "A",
+          "Column_name": "event_type",
+          "Comment": "",
+          "Ignored": "NO",
+          "Index_comment": "",
+          "Index_type": "BTREE",
+          "Key_name": "idx_activity_recent",
+          "Non_unique": 1,
+          "Null": "",
+          "Packed": null,
+          "Seq_in_index": 3,
+          "Sub_part": null,
+          "Table": "activity_events"
+        },
+        {
+          "Cardinality": 174090,
+          "Collation": "A",
+          "Column_name": "campaign_id",
+          "Comment": "",
+          "Ignored": "NO",
+          "Index_comment": "",
+          "Index_type": "BTREE",
+          "Key_name": "idx_activity_recent",
+          "Non_unique": 1,
+          "Null": "YES",
+          "Packed": null,
+          "Seq_in_index": 4,
+          "Sub_part": null,
+          "Table": "activity_events"
+        },
+        {
+          "Cardinality": 174090,
+          "Collation": "A",
+          "Column_name": "product_id",
+          "Comment": "",
+          "Ignored": "NO",
+          "Index_comment": "",
+          "Index_type": "BTREE",
+          "Key_name": "idx_activity_recent",
+          "Non_unique": 1,
+          "Null": "YES",
+          "Packed": null,
+          "Seq_in_index": 5,
+          "Sub_part": null,
+          "Table": "activity_events"
+        }
+      ],
+      "two_engine": [
+        {
+          "Cardinality": null,
+          "Collation": null,
+          "Column_name": "event_id",
+          "Comment": "",
+          "Ignored": "NO",
+          "Index_comment": "",
+          "Index_type": "HASH",
+          "Key_name": "PRIMARY",
+          "Non_unique": 0,
+          "Null": "",
+          "Packed": null,
+          "Seq_in_index": 1,
+          "Sub_part": null,
+          "Table": "activity_events"
+        }
+      ]
+    },
+    "mad_definition": "median(abs(sample - median(sample)))",
+    "measured_repetitions_per_query_variant": 20,
+    "ordering_policy": {
+      "query_shuffle": "random.Random(seed + zero_based_repetition).shuffle(query_names)",
+      "repetitions": [
+        {
+          "query_order": [
+            "overview_activity",
+            "recent_activity",
+            "campaigns"
+          ],
+          "repetition": 1,
+          "variant_order": [
+            "two_engine",
+            "innodb_only"
+          ]
+        },
+        {
+          "query_order": [
+            "recent_activity",
+            "campaigns",
+            "overview_activity"
+          ],
+          "repetition": 2,
+          "variant_order": [
+            "innodb_only",
+            "two_engine"
+          ]
+        },
+        {
+          "query_order": [
+            "recent_activity",
+            "overview_activity",
+            "campaigns"
+          ],
+          "repetition": 3,
+          "variant_order": [
+            "two_engine",
+            "innodb_only"
+          ]
+        },
+        {
+          "query_order": [
+            "recent_activity",
+            "overview_activity",
+            "campaigns"
+          ],
+          "repetition": 4,
+          "variant_order": [
+            "innodb_only",
+            "two_engine"
+          ]
+        },
+        {
+          "query_order": [
+            "campaigns",
+            "recent_activity",
+            "overview_activity"
+          ],
+          "repetition": 5,
+          "variant_order": [
+            "two_engine",
+            "innodb_only"
+          ]
+        },
+        {
+          "query_order": [
+            "recent_activity",
+            "campaigns",
+            "overview_activity"
+          ],
+          "repetition": 6,
+          "variant_order": [
+            "innodb_only",
+            "two_engine"
+          ]
+        },
+        {
+          "query_order": [
+            "campaigns",
+            "overview_activity",
+            "recent_activity"
+          ],
+          "repetition": 7,
+          "variant_order": [
+            "two_engine",
+            "innodb_only"
+          ]
+        },
+        {
+          "query_order": [
+            "overview_activity",
+            "recent_activity",
+            "campaigns"
+          ],
+          "repetition": 8,
+          "variant_order": [
+            "innodb_only",
+            "two_engine"
+          ]
+        },
+        {
+          "query_order": [
+            "campaigns",
+            "overview_activity",
+            "recent_activity"
+          ],
+          "repetition": 9,
+          "variant_order": [
+            "two_engine",
+            "innodb_only"
+          ]
+        },
+        {
+          "query_order": [
+            "recent_activity",
+            "overview_activity",
+            "campaigns"
+          ],
+          "repetition": 10,
+          "variant_order": [
+            "innodb_only",
+            "two_engine"
+          ]
+        },
+        {
+          "query_order": [
+            "overview_activity",
+            "recent_activity",
+            "campaigns"
+          ],
+          "repetition": 11,
+          "variant_order": [
+            "two_engine",
+            "innodb_only"
+          ]
+        },
+        {
+          "query_order": [
+            "recent_activity",
+            "campaigns",
+            "overview_activity"
+          ],
+          "repetition": 12,
+          "variant_order": [
+            "innodb_only",
+            "two_engine"
+          ]
+        },
+        {
+          "query_order": [
+            "recent_activity",
+            "overview_activity",
+            "campaigns"
+          ],
+          "repetition": 13,
+          "variant_order": [
+            "two_engine",
+            "innodb_only"
+          ]
+        },
+        {
+          "query_order": [
+            "overview_activity",
+            "recent_activity",
+            "campaigns"
+          ],
+          "repetition": 14,
+          "variant_order": [
+            "innodb_only",
+            "two_engine"
+          ]
+        },
+        {
+          "query_order": [
+            "campaigns",
+            "recent_activity",
+            "overview_activity"
+          ],
+          "repetition": 15,
+          "variant_order": [
+            "two_engine",
+            "innodb_only"
+          ]
+        },
+        {
+          "query_order": [
+            "recent_activity",
+            "campaigns",
+            "overview_activity"
+          ],
+          "repetition": 16,
+          "variant_order": [
+            "innodb_only",
+            "two_engine"
+          ]
+        },
+        {
+          "query_order": [
+            "recent_activity",
+            "overview_activity",
+            "campaigns"
+          ],
+          "repetition": 17,
+          "variant_order": [
+            "two_engine",
+            "innodb_only"
+          ]
+        },
+        {
+          "query_order": [
+            "overview_activity",
+            "recent_activity",
+            "campaigns"
+          ],
+          "repetition": 18,
+          "variant_order": [
+            "innodb_only",
+            "two_engine"
+          ]
+        },
+        {
+          "query_order": [
+            "overview_activity",
+            "recent_activity",
+            "campaigns"
+          ],
+          "repetition": 19,
+          "variant_order": [
+            "two_engine",
+            "innodb_only"
+          ]
+        },
+        {
+          "query_order": [
+            "campaigns",
+            "overview_activity",
+            "recent_activity"
+          ],
+          "repetition": 20,
+          "variant_order": [
+            "innodb_only",
+            "two_engine"
+          ]
+        }
+      ],
+      "variant_order": "two_engine first on odd-numbered repetitions; innodb_only first on even-numbered repetitions"
+    },
+    "percentile_definition": "nearest rank: sorted sample at ceil(0.95 * n), one-based rank",
+    "queries": {
+      "campaigns": {
+        "sql_file": "campaigns.sql",
+        "sql_sha256": "9f83faa5d82533760ac693cccd08380433cd86b3fe12c892e1b5883c592d1ac1"
+      },
+      "overview_activity": {
+        "sql_file": "overview_activity.sql",
+        "sql_sha256": "b024067c082e2d849a9091e3c993358fe1f6c8229ec2873dc1b1542f0cc83836"
+      },
+      "recent_activity": {
+        "sql_file": "recent_activity.sql",
+        "sql_sha256": "fb05b2c2bb782224fd10ceb008489a92daea1bc5c5dabfe01ba200f23023560e"
+      }
+    },
+    "schema_engines": {
+      "innodb_only": {
+        "activity_events": "InnoDB",
+        "commerce": "InnoDB"
+      },
+      "two_engine": {
+        "activity_events": "DuckDB",
+        "commerce": "InnoDB"
+      }
+    },
+    "schema_template_sha256": "6eb4fccb583c3987d34d49172dab128349124cc5d05f46e7fd3b00ef35943045",
+    "timing_definition": "Client-observed nanoseconds from immediately before cursor.execute() through completion of cursor.fetchall(); connection setup, cursor creation, result digesting, EXPLAIN, and JSON encoding are excluded.",
+    "warmup_samples_retained": false,
+    "warmups_per_query_variant": 3
+  },
+  "samples": [
+    {
+      "elapsed_ns": 19535167,
+      "execution_sequence": 1,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 1,
+      "repetition": 1,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 6908459,
+      "execution_sequence": 2,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 2,
+      "repetition": 1,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 49829542,
+      "execution_sequence": 3,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 3,
+      "repetition": 1,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 62143167,
+      "execution_sequence": 4,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 1,
+      "repetition": 1,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 701958,
+      "execution_sequence": 5,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 2,
+      "repetition": 1,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 239053500,
+      "execution_sequence": 6,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 3,
+      "repetition": 1,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 690167,
+      "execution_sequence": 7,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 1,
+      "repetition": 2,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 238541042,
+      "execution_sequence": 8,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 2,
+      "repetition": 2,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 59638208,
+      "execution_sequence": 9,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 3,
+      "repetition": 2,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 7366541,
+      "execution_sequence": 10,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 1,
+      "repetition": 2,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 49009792,
+      "execution_sequence": 11,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 2,
+      "repetition": 2,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 24111500,
+      "execution_sequence": 12,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 3,
+      "repetition": 2,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 15168083,
+      "execution_sequence": 13,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 1,
+      "repetition": 3,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 22194916,
+      "execution_sequence": 14,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 2,
+      "repetition": 3,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 50067625,
+      "execution_sequence": 15,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 3,
+      "repetition": 3,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 716250,
+      "execution_sequence": 16,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 1,
+      "repetition": 3,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 68714916,
+      "execution_sequence": 17,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 2,
+      "repetition": 3,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 244805875,
+      "execution_sequence": 18,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 3,
+      "repetition": 3,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 547209,
+      "execution_sequence": 19,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 1,
+      "repetition": 4,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 64919208,
+      "execution_sequence": 20,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 2,
+      "repetition": 4,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 242029292,
+      "execution_sequence": 21,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 3,
+      "repetition": 4,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 7180458,
+      "execution_sequence": 22,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 1,
+      "repetition": 4,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 19822334,
+      "execution_sequence": 23,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 2,
+      "repetition": 4,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 47650542,
+      "execution_sequence": 24,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 3,
+      "repetition": 4,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 48972375,
+      "execution_sequence": 25,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 1,
+      "repetition": 5,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 7455459,
+      "execution_sequence": 26,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 2,
+      "repetition": 5,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 19232042,
+      "execution_sequence": 27,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 3,
+      "repetition": 5,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 241059542,
+      "execution_sequence": 28,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 1,
+      "repetition": 5,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 751500,
+      "execution_sequence": 29,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 2,
+      "repetition": 5,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 59143042,
+      "execution_sequence": 30,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 3,
+      "repetition": 5,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 716500,
+      "execution_sequence": 31,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 1,
+      "repetition": 6,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 243726000,
+      "execution_sequence": 32,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 2,
+      "repetition": 6,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 65540875,
+      "execution_sequence": 33,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 3,
+      "repetition": 6,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 7358500,
+      "execution_sequence": 34,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 1,
+      "repetition": 6,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 48665959,
+      "execution_sequence": 35,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 2,
+      "repetition": 6,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 20083250,
+      "execution_sequence": 36,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 3,
+      "repetition": 6,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 46989417,
+      "execution_sequence": 37,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 1,
+      "repetition": 7,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 21028500,
+      "execution_sequence": 38,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 2,
+      "repetition": 7,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 6691750,
+      "execution_sequence": 39,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 3,
+      "repetition": 7,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 242024501,
+      "execution_sequence": 40,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 1,
+      "repetition": 7,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 59247791,
+      "execution_sequence": 41,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 2,
+      "repetition": 7,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 636541,
+      "execution_sequence": 42,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 3,
+      "repetition": 7,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 63305500,
+      "execution_sequence": 43,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 1,
+      "repetition": 8,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 616916,
+      "execution_sequence": 44,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 2,
+      "repetition": 8,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 240826541,
+      "execution_sequence": 45,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 3,
+      "repetition": 8,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 20068416,
+      "execution_sequence": 46,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 1,
+      "repetition": 8,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 7007875,
+      "execution_sequence": 47,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 2,
+      "repetition": 8,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 51094125,
+      "execution_sequence": 48,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 3,
+      "repetition": 8,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 49747709,
+      "execution_sequence": 49,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 1,
+      "repetition": 9,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 20555166,
+      "execution_sequence": 50,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 2,
+      "repetition": 9,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 7375334,
+      "execution_sequence": 51,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 3,
+      "repetition": 9,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 241675834,
+      "execution_sequence": 52,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 1,
+      "repetition": 9,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 59181667,
+      "execution_sequence": 53,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 2,
+      "repetition": 9,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 661833,
+      "execution_sequence": 54,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 3,
+      "repetition": 9,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 467708,
+      "execution_sequence": 55,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 1,
+      "repetition": 10,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 59909458,
+      "execution_sequence": 56,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 2,
+      "repetition": 10,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 240271916,
+      "execution_sequence": 57,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 3,
+      "repetition": 10,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 7416916,
+      "execution_sequence": 58,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 1,
+      "repetition": 10,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 19516791,
+      "execution_sequence": 59,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 2,
+      "repetition": 10,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 51879083,
+      "execution_sequence": 60,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 3,
+      "repetition": 10,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 20269000,
+      "execution_sequence": 61,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 1,
+      "repetition": 11,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 7245500,
+      "execution_sequence": 62,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 2,
+      "repetition": 11,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 49520875,
+      "execution_sequence": 63,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 3,
+      "repetition": 11,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 67058625,
+      "execution_sequence": 64,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 1,
+      "repetition": 11,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 600459,
+      "execution_sequence": 65,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 2,
+      "repetition": 11,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 244862875,
+      "execution_sequence": 66,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 3,
+      "repetition": 11,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 660250,
+      "execution_sequence": 67,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 1,
+      "repetition": 12,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 236245250,
+      "execution_sequence": 68,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 2,
+      "repetition": 12,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 59530000,
+      "execution_sequence": 69,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 3,
+      "repetition": 12,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 7308958,
+      "execution_sequence": 70,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 1,
+      "repetition": 12,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 48513375,
+      "execution_sequence": 71,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 2,
+      "repetition": 12,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 19880583,
+      "execution_sequence": 72,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 3,
+      "repetition": 12,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 7408375,
+      "execution_sequence": 73,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 1,
+      "repetition": 13,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 19714042,
+      "execution_sequence": 74,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 2,
+      "repetition": 13,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 47858042,
+      "execution_sequence": 75,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 3,
+      "repetition": 13,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 680125,
+      "execution_sequence": 76,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 1,
+      "repetition": 13,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 66135750,
+      "execution_sequence": 77,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 2,
+      "repetition": 13,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 239964375,
+      "execution_sequence": 78,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 3,
+      "repetition": 13,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 63644041,
+      "execution_sequence": 79,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 1,
+      "repetition": 14,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 709625,
+      "execution_sequence": 80,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 2,
+      "repetition": 14,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 240195542,
+      "execution_sequence": 81,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 3,
+      "repetition": 14,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 19767000,
+      "execution_sequence": 82,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 1,
+      "repetition": 14,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 7321625,
+      "execution_sequence": 83,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 2,
+      "repetition": 14,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 47788000,
+      "execution_sequence": 84,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 3,
+      "repetition": 14,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 48562125,
+      "execution_sequence": 85,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 1,
+      "repetition": 15,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 7046500,
+      "execution_sequence": 86,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 2,
+      "repetition": 15,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 19941959,
+      "execution_sequence": 87,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 3,
+      "repetition": 15,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 240090625,
+      "execution_sequence": 88,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 1,
+      "repetition": 15,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 607208,
+      "execution_sequence": 89,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 2,
+      "repetition": 15,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 60029583,
+      "execution_sequence": 90,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 3,
+      "repetition": 15,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 620708,
+      "execution_sequence": 91,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 1,
+      "repetition": 16,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 244917958,
+      "execution_sequence": 92,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 2,
+      "repetition": 16,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 64018959,
+      "execution_sequence": 93,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 3,
+      "repetition": 16,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 7232875,
+      "execution_sequence": 94,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 1,
+      "repetition": 16,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 46669958,
+      "execution_sequence": 95,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 2,
+      "repetition": 16,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 20448000,
+      "execution_sequence": 96,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 3,
+      "repetition": 16,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 7149667,
+      "execution_sequence": 97,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 1,
+      "repetition": 17,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 19997708,
+      "execution_sequence": 98,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 2,
+      "repetition": 17,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 49218667,
+      "execution_sequence": 99,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 3,
+      "repetition": 17,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 728916,
+      "execution_sequence": 100,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 1,
+      "repetition": 17,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 62452958,
+      "execution_sequence": 101,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 2,
+      "repetition": 17,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 244524666,
+      "execution_sequence": 102,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 3,
+      "repetition": 17,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 67252250,
+      "execution_sequence": 103,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 1,
+      "repetition": 18,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 605042,
+      "execution_sequence": 104,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 2,
+      "repetition": 18,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 241380709,
+      "execution_sequence": 105,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 3,
+      "repetition": 18,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 19899959,
+      "execution_sequence": 106,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 1,
+      "repetition": 18,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 7107791,
+      "execution_sequence": 107,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 2,
+      "repetition": 18,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 49013250,
+      "execution_sequence": 108,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 3,
+      "repetition": 18,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 19682875,
+      "execution_sequence": 109,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 1,
+      "repetition": 19,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 7049916,
+      "execution_sequence": 110,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 2,
+      "repetition": 19,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 48431500,
+      "execution_sequence": 111,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 3,
+      "repetition": 19,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 59224833,
+      "execution_sequence": 112,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 1,
+      "repetition": 19,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 601125,
+      "execution_sequence": 113,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 2,
+      "repetition": 19,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 242056750,
+      "execution_sequence": 114,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 3,
+      "repetition": 19,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 243286084,
+      "execution_sequence": 115,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 1,
+      "repetition": 20,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 66069125,
+      "execution_sequence": 116,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 2,
+      "repetition": 20,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 662875,
+      "execution_sequence": 117,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 3,
+      "repetition": 20,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "innodb_only",
+      "variant_position": 1
+    },
+    {
+      "elapsed_ns": 48309542,
+      "execution_sequence": 118,
+      "fetched_rows": 3,
+      "query": "campaigns",
+      "query_position": 1,
+      "repetition": 20,
+      "result_sha256": "12ebb9d812c85893105678eb49cd3364d49e62648f67426719d31d96e05f2927",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 20736708,
+      "execution_sequence": 119,
+      "fetched_rows": 1,
+      "query": "overview_activity",
+      "query_position": 2,
+      "repetition": 20,
+      "result_sha256": "b04f0f745f18a198e1a87599f8d94905b3a1427c096fe672c3837caa3a799c99",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 2
+    },
+    {
+      "elapsed_ns": 6931208,
+      "execution_sequence": 120,
+      "fetched_rows": 50,
+      "query": "recent_activity",
+      "query_position": 3,
+      "repetition": 20,
+      "result_sha256": "b6f69d4b73195406c3cfe8cb9995d58a5f58b43ac0f9c2ab6efce6815760f69e",
+      "scale": 50000,
+      "variant": "two_engine",
+      "variant_position": 2
+    }
+  ],
+  "summaries": {
+    "campaigns": {
+      "innodb_only": {
+        "mad_ns": "1500771.5",
+        "max_ns": 244917958,
+        "median_ns": "241528271.5",
+        "min_ns": 236245250,
+        "n": 20,
+        "p95_ns": 244862875
+      },
+      "two_engine": {
+        "mad_ns": "815125",
+        "max_ns": 51879083,
+        "median_ns": "48819167",
+        "min_ns": 46669958,
+        "n": 20,
+        "p95_ns": 51094125
+      }
+    },
+    "overview_activity": {
+      "innodb_only": {
+        "mad_ns": "3215458.5",
+        "max_ns": 68714916,
+        "median_ns": "62879229",
+        "min_ns": 59143042,
+        "n": 20,
+        "p95_ns": 67252250
+      },
+      "two_engine": {
+        "mad_ns": "293062.5",
+        "max_ns": 24111500,
+        "median_ns": "19969833.5",
+        "min_ns": 19232042,
+        "n": 20,
+        "p95_ns": 22194916
+      }
+    },
+    "recent_activity": {
+      "innodb_only": {
+        "mad_ns": "51208.5",
+        "max_ns": 751500,
+        "median_ns": "661041.5",
+        "min_ns": 467708,
+        "n": 20,
+        "p95_ns": 728916
+      },
+      "two_engine": {
+        "mad_ns": "152667.0",
+        "max_ns": 15168083,
+        "median_ns": "7239187.5",
+        "min_ns": 6691750,
+        "n": 20,
+        "p95_ns": 7455459
+      }
+    }
+  }
+}
