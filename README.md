@@ -6,7 +6,7 @@ A Constructor University project investigating when operational and analytical w
 
 The application includes five tables, deterministic commerce activity, a continuous session simulator, and a campaign conversion/revenue query combining DuckDB session history with InnoDB purchases. InnoDB owns products, campaigns, orders, and order items; DuckDB owns `activity_events`. Checkout stays entirely inside InnoDB.
 
-The original foundation is preserved in Git at `v0.1.0`. The read-only Flask dashboard combines live operational and behavioural observations. Performance comparisons and cross-engine transaction/staleness experiments remain future work. Functionality has been demonstrated; performance superiority has not.
+The original foundation is preserved in Git at `v0.1.0`. The read-only Flask dashboard combines live operational and behavioural observations. The [experiments](experiments/README.md) document transaction behaviour, separate-store freshness, and measured analytical queries; the performance findings apply to the tested workloads and environment.
 
 See [the schema guide](docs/schema.md) for relationships, integrity boundaries, and observed plugin limitations.
 
