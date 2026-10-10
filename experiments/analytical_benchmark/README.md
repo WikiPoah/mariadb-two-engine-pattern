@@ -21,3 +21,28 @@ docker compose -p "$BENCHMARK_PROJECT" run --rm \
 ```
 
 Use `--scale 5000` or `--scale 50000` to select one pair. `prepare` refuses to reuse any target schema; discard the disposable MariaDB volume and start fresh before repeating it. `validate` checks engine placement, every canonical table row, and the existing activity overview, recent activity (50 rows), and campaign analytics answers. It exits unsuccessfully on a mismatch. No query timings are collected by these commands.
+
+## Measurement protocol
+
+The measurement command accepts only a locked scale and runs the paired correctness validation before and after timing. It uses one persistent MariaDB connection per variant, sets each session to UTC, disables the MariaDB query cache, performs three discarded warmups and records 20 measured executions for each production query and variant. Query order is deterministically shuffled per repetition, and the variant-first position alternates. The interpretation is warm-cache only.
+
+`elapsed_ns` is client-observed time from immediately before `cursor.execute()` until `cursor.fetchall()` has fully materialized the result. Connection setup, `EXPLAIN`, result digesting, dataset loading, and JSON serialization are outside that interval. Evidence retains each raw sample and result digest, SQL hashes, environment/session metadata, index and `EXPLAIN` diagnostics, correctness reports, and median, minimum, maximum, median absolute deviation, and nearest-rank p95 summaries. EXPLAIN output is diagnostic evidence; engine plan costs are not directly comparable.
+
+After review authorizes measurements, capture stdout to a new host-side file. Shell noclobber prevents replacing existing evidence:
+
+```sh
+set -o noclobber
+docker compose -p "$BENCHMARK_PROJECT" run --rm \
+  --volume "$PWD:/workspace:ro" --workdir /workspace \
+  --env MARIADB_USER=root \
+  --env MARIADB_PASSWORD="$MARIADB_ROOT_PASSWORD" \
+  --entrypoint python dashboard -m experiments.analytical_benchmark measure \
+  --scale 5000 > experiments/analytical_benchmark/results-5000.json
+
+docker compose -p "$BENCHMARK_PROJECT" run --rm \
+  --volume "$PWD:/workspace:ro" --workdir /workspace \
+  --entrypoint python dashboard -m experiments.analytical_benchmark summarize \
+  --input experiments/analytical_benchmark/results-5000.json
+```
+
+No performance measurements or result files have been collected. Any future findings apply only to these queries, scales, indexes, warm-cache conditions, and recorded environment; median ratios are descriptive and do not establish significance or general engine superiority.
