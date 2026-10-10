@@ -6,10 +6,13 @@ from dataclasses import replace
 from datetime import timedelta
 from decimal import Decimal
 from datetime import datetime, timezone
+from importlib.metadata import PackageNotFoundError
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest.mock import patch
 from uuid import UUID
+
+import pymysql
 
 from experiments.analytical_benchmark import measurement
 from experiments.analytical_benchmark.database import query_mismatches, rows_digest, rows_match
@@ -267,6 +270,25 @@ class _FakeClock:
 
 
 class MeasurementTests(unittest.TestCase):
+    def test_pymysql_version_uses_installed_distribution_metadata(self):
+        with patch.object(pymysql, "__version__", "2.2.8"), patch.object(
+            measurement, "distribution_version", return_value="1.2.0"
+        ) as distribution_version:
+            self.assertEqual(
+                measurement._installed_distribution_version("PyMySQL"), "1.2.0"
+            )
+        distribution_version.assert_called_once_with("PyMySQL")
+
+    def test_missing_distribution_metadata_is_recorded_as_unavailable(self):
+        with patch.object(
+            measurement,
+            "distribution_version",
+            side_effect=PackageNotFoundError("PyMySQL"),
+        ):
+            self.assertIsNone(
+                measurement._installed_distribution_version("PyMySQL")
+            )
+
     def _run_fake(self, validator=None):
         connections = []
         configs = []

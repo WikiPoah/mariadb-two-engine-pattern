@@ -10,9 +10,11 @@ import time
 from contextlib import ExitStack
 from datetime import date, datetime, timezone
 from decimal import Decimal
+from importlib.metadata import (
+    PackageNotFoundError,
+    version as distribution_version,
+)
 from pathlib import Path
-
-import pymysql
 
 from experiments.analytical_benchmark.database import (
     SCHEMA_PATH,
@@ -37,6 +39,13 @@ QUERY_FILES = {
 QUERY_PARAMETERS = {"overview_activity": None, "recent_activity": (RECENT_ACTIVITY_LIMIT,),
                     "campaigns": None}
 SQL_DIRECTORY = Path(__file__).resolve().parents[2] / "dashboard" / "sql"
+
+
+def _installed_distribution_version(distribution_name):
+    try:
+        return distribution_version(distribution_name)
+    except PackageNotFoundError:
+        return None
 
 
 def median(values):
@@ -380,7 +389,7 @@ def measure_scale(config, scale, *, connection_factory=None,
             "host_architecture": os.environ.get("BENCHMARK_HOST_ARCHITECTURE"),
             "runner_container_architecture": platform.machine(),
             "python_version": sys.version,
-            "pymysql_version": getattr(pymysql, "__version__", None),
+            "pymysql_version": _installed_distribution_version("PyMySQL"),
             "container_limits": _container_limits(),
             "variants": variant_environment,
         },
