@@ -110,6 +110,7 @@ def run_scheduled_feed(
 
 def _utc(timestamp: datetime) -> datetime:
     if timestamp.tzinfo is None:
+        # Stored timestamps are naive, but this harness writes both clocks in UTC.
         return timestamp.replace(tzinfo=timezone.utc)
     return timestamp.astimezone(timezone.utc)
 

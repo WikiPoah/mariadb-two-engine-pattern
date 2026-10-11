@@ -77,6 +77,7 @@ def run_feed_cycle(source, destination, *, clock=None) -> FeedCycle:
     campaigns = _source_rows(source, CAMPAIGNS_SQL)
     source_read_at = now()
 
+    # This append-only workload generates increasing IDs; this is not general CDC.
     next_event_checkpoint = max(
         (int(row[0]) for row in events), default=event_checkpoint
     )

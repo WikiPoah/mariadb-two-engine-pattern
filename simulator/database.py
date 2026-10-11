@@ -18,7 +18,7 @@ def open_connection(config: dict):
 
 @contextmanager
 def open_connections(config: dict):
-    # Separate sessions keep event writes outside future checkout transactions.
+    # Separate sessions keep event writes outside checkout transactions.
     # Autocommit prevents catalog reads retaining an old InnoDB snapshot.
     with ExitStack() as stack:
         operational = stack.enter_context(open_connection(config))
