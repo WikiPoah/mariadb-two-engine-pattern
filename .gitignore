@@ -1,2 +1,9 @@
 .env
 .DS_Store
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.duckdb
+*.duckdb.wal
+/experiments/analytical_benchmark/results/local-*.json

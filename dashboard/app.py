@@ -1,4 +1,4 @@
-"""Read-only JSON endpoints; each query owns a short-lived database connection."""
+"""Read-only API; each request owns and closes a short-lived database connection."""
 
 from datetime import datetime, timezone
 from decimal import Decimal

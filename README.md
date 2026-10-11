@@ -1,4 +1,4 @@
-A project for area 20, "An application that proves the two-engine pattern" for the MariaDB student database projects, 2026-09.
+Area 20 — [An application that proves the two-engine pattern](https://mariadb.org/bachelor_hackathon_2026-09/) — MariaDB Student Database Projects, 2026-09.
 
 # Real-Time Commerce & Campaign Analytics
 
@@ -6,7 +6,7 @@ A Constructor University project investigating when operational and analytical w
 
 The application includes five tables, deterministic commerce activity, a continuous session simulator, and a campaign conversion/revenue query combining DuckDB session history with InnoDB purchases. InnoDB owns products, campaigns, orders, and order items; DuckDB owns `activity_events`. Checkout stays entirely inside InnoDB.
 
-The original foundation is preserved in Git at `v0.1.0`. The read-only Flask dashboard combines live operational and behavioural observations. The [experiments](experiments/README.md) document transaction behaviour, separate-store freshness, and measured analytical queries; the performance findings apply to the tested workloads and environment.
+The original foundation is preserved in Git at `v0.1.0`. The read-only Flask dashboard combines live operational and behavioural observations. The [experiment results](experiments/results.md) record transaction, integrity, and application-failure observations. In the same-server query comparison, the two-engine variant had lower measured median latency for activity aggregation and campaign analysis, while indexed InnoDB was faster for `recent_activity LIMIT 50`; these findings apply only to the tested workloads and scales ([method and results](experiments/analytical_benchmark/README.md)). A separate experiment measures feed freshness when copying to a standalone DuckDB store ([separate-store results](experiments/results.md#6-separate-analytical-store-freshness)); it is distinct from the same-server engine comparison.
 
 See [the schema guide](docs/schema.md) for relationships, integrity boundaries, and observed plugin limitations.
 
@@ -20,7 +20,7 @@ See [the schema guide](docs/schema.md) for relationships, integrity boundaries, 
 - Internet access for image/package downloads and a local clone of this repository.
 - No host MariaDB installation is needed.
 
-The ARM64 foundation workflow and application schema/seed/verification have passed locally on Apple Silicon. The AMD64 image build passed under emulation, including checksum and package installation checks; AMD64 database runtime and SQL execution remain unverified.
+The ARM64 application workflow has passed locally on Apple Silicon. The AMD64 image build passed under emulation, including checksum and package installation checks. GitHub Actions runs on an x64 `ubuntu-24.04` hosted runner and validates MariaDB 12.3.3 startup, active DuckDB support, schema and seed loading, and deterministic SQL assertions. Broader manual or interactive AMD64 testing has not been performed.
 
 Run shell commands in your **Mac terminal**, **Linux terminal**, or **WSL Linux shell on Windows**, from the repository root. SQL clients run inside the container. Use WSL rather than PowerShell for the input redirection shown below.
 

@@ -2,9 +2,9 @@
 
 ## Workload and scope
 
-Real-Time Commerce & Campaign Analytics models a visitor arriving organically or through a campaign, viewing products, and either leaving or purchasing. The current implementation is a deterministic dataset and SQL analytics, not a running commerce website or continuous simulator.
+Real-Time Commerce & Campaign Analytics models a visitor arriving organically or through a campaign, viewing products, and either leaving or purchasing. The deterministic fixture and SQL analytics are complemented by a running continuous simulator that exercises browsing and checkout against the schema; this is not a general commerce website.
 
-The future simulator will keep carts in memory. There is no customer account or sessions table, payment integration, shipping, refund, cancellation, or order-status lifecycle. One session may produce at most one purchase. The workload motivates the engine split; its performance value still requires measurement.
+The simulator keeps carts in memory. There is no customer account or sessions table, payment integration, shipping, refund, cancellation, or order-status lifecycle. One session may produce at most one purchase. Analytical performance has been measured for the defined benchmark workload; results are specific to its queries, data scales, indexes, and test environment ([benchmark method and results](../experiments/analytical_benchmark/README.md)).
 
 ## Tables and relationships
 
@@ -22,11 +22,11 @@ All InnoDB foreign keys use `RESTRICT` for deletion and key updates. IDs are tre
 
 ## Checkout and historical truth
 
-Each seeded purchase locks its product rows and creates the order, its items, and stock decrements inside one explicit InnoDB transaction. Event inserts are outside those transactions. No successful checkout depends on committing a DuckDB write.
+The seed and simulator checkout lock product rows and create each order, its items, and stock decrements inside explicit InnoDB transactions. Event inserts are outside checkout transactions. No successful checkout depends on committing a DuckDB write.
 
 `order_items.unit_price` captures the catalog price at checkout. Revenue is derived from quantity times this captured price; there is no duplicated order total. The seed changes the notebook catalog price from EUR 10 to EUR 12 after purchases, while its purchased price stays EUR 10. Committed purchases must remain immutable through application policy; the schema does not prohibit all later updates.
 
-The future checkout implementation must validate product availability and sufficient stock while holding locks, lock multiple products in consistent ID order, create at least one item, and roll back the entire purchase on failure. The deterministic seed assumes known fresh data; it is not a general checkout implementation. A nonnegative-stock check alone is not a concurrency-control strategy.
+Simulator checkout validates product availability and sufficient stock while holding locks, locks multiple products in ascending ID order, and creates at least one item. It rolls back on transaction errors before commit; if commit acknowledgement fails, it checks the unique session on a fresh connection and never resubmits checkout. The deterministic seed assumes known fresh data; it is not a general checkout implementation. A nonnegative-stock check alone is not a concurrency-control strategy.
 
 ## Sessions, attribution, time, and currency
 
@@ -43,7 +43,7 @@ The future checkout implementation must validate product availability and suffic
 
 **Verified plugin behavior:** disposable tests on MariaDB `12.3.3-MariaDB-ubu2404`, package `mariadb-plugin-duckdb=1:12.3.3+maria~ubu2404`, on Linux/ARM64 accepted the event table and generated IDs. Both event checks rejected tested invalid inserts without storing rows, and a null `event_type` was rejected. Sample `DATETIME(6)` values and canonical session strings round-tripped correctly. Other required columns were declared `NOT NULL` but not individually probed with null inputs.
 
-**Future simulator/application responsibilities:** canonical UUID validation, one session start, fixed attribution, chronological consistency, valid logical references, purchase immutability, and complete checkout error handling. Event IDs are convenient generated identifiers only: omit them on inserts and never use them as an enforced deduplication or integrity mechanism. Missing analytical history may affect metrics but must not compromise committed purchases.
+**Simulator/application responsibilities:** canonical UUID validation, one session start, fixed attribution, chronological consistency, valid logical references, purchase immutability, and complete checkout error handling. Event IDs are convenient generated identifiers only: omit them on inserts and never use them as an enforced deduplication or integrity mechanism. Missing analytical history may affect metrics but must not compromise committed purchases.
 
 Expected-failure constraint probes belong in a disposable environment, separate from [03-verify.sql](../sql/03-verify.sql). That file reads data and reports results; it neither mutates fixtures nor proves enforcement by attempting invalid writes.
 
@@ -69,4 +69,4 @@ The core query takes only session starts in `[2026-09-13 12:00, 12:05)` UTC and 
 
 Conversion is purchasing sessions divided by cohort sessions. Campaign state is current state, while attribution is historical; paused Study Week remains visible. Expected Campus Launch / Study Week / Organic results are respectively 2/1/2 sessions, 1/1/1 purchasing sessions, 50/100/50 percent conversion, and EUR 26/8/4 revenue.
 
-Verification also inspects table engines, row counts, stock, price preservation, total revenue, and logical relationship violations. These results establish correctness for the tested fixtures, not continuous-write behavior, performance superiority, or cross-engine transaction guarantees. Continuous simulation builds on this verified schema and remains separate from deterministic fixture verification.
+Verification also inspects table engines, row counts, stock, price preservation, total revenue, and logical relationship violations. These results establish correctness for the tested fixtures, not general continuous-write behavior, universal performance characteristics, or cross-engine transaction guarantees. The simulator can add rows after the deterministic fixture is loaded, so the seed's fixed counts apply before simulation.

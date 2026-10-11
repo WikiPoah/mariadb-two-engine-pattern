@@ -29,22 +29,21 @@ From the repository root, set temporary credentials outside the repository and
 choose a unique Compose project name:
 
 ```sh
-docker_bin=/Applications/Docker.app/Contents/Resources/bin/docker
 project=innodb-rollback-$(date +%s)
 export MARIADB_ROOT_PASSWORD='temporary-root-password'
 export MARIADB_DASHBOARD_PASSWORD='temporary-dashboard-password'
 
-"$docker_bin" compose -p "$project" up -d mariadb
-until "$docker_bin" compose -p "$project" exec -T mariadb \
+docker compose -p "$project" up -d mariadb
+until docker compose -p "$project" exec -T mariadb \
   healthcheck.sh --connect --innodb_initialized; do sleep 2; done
 
-"$docker_bin" compose -p "$project" exec -T \
+docker compose -p "$project" exec -T \
   -e MYSQL_PWD="$MARIADB_ROOT_PASSWORD" mariadb \
   mariadb --user=root < sql/01-schema.sql
-"$docker_bin" compose -p "$project" exec -T \
+docker compose -p "$project" exec -T \
   -e MYSQL_PWD="$MARIADB_ROOT_PASSWORD" mariadb \
   mariadb --user=root commerce_analytics < sql/02-seed.sql
-"$docker_bin" compose -p "$project" exec -T \
+docker compose -p "$project" exec -T \
   -e MYSQL_PWD="$MARIADB_ROOT_PASSWORD" mariadb \
   mariadb --user=root commerce_analytics < experiments/sql/01-innodb-rollback.sql
 ```
@@ -53,7 +52,7 @@ The SQL output is the experiment evidence. Clean up only the disposable
 project when finished:
 
 ```sh
-"$docker_bin" compose -p "$project" down --volumes --remove-orphans
+docker compose -p "$project" down --volumes --remove-orphans
 unset MARIADB_ROOT_PASSWORD MARIADB_DASHBOARD_PASSWORD
 ```
 
@@ -73,7 +72,7 @@ connection verification, and cleanup. Repeat the same setup commands above.
 After loading `sql/02-seed.sql`, execute:
 
 ```sh
-"$docker_bin" compose -p "$project" exec -T \
+docker compose -p "$project" exec -T \
   -e MYSQL_PWD="$MARIADB_ROOT_PASSWORD" mariadb \
   mariadb --user=root commerce_analytics < experiments/sql/02-duckdb-rollback.sql
 ```
@@ -96,7 +95,7 @@ connection verification, and cleanup. Run this script only after loading the
 unchanged schema and seed:
 
 ```sh
-"$docker_bin" compose -p "$project" exec -T \
+docker compose -p "$project" exec -T \
   -e MYSQL_PWD="$MARIADB_ROOT_PASSWORD" mariadb \
   mariadb --user=root commerce_analytics \
   < experiments/sql/03-cross-engine-transaction.sql
@@ -149,7 +148,7 @@ MariaDB 12.3.3 and the active DuckDB plugin, then load the unchanged schema and
 seed. Execute one case, for example:
 
 ```sh
-"$docker_bin" compose -p "$project" exec -T \
+docker compose -p "$project" exec -T \
   -e MYSQL_PWD="$MARIADB_ROOT_PASSWORD" mariadb \
   mariadb --user=root commerce_analytics --show-warnings \
   < experiments/sql/04a-innodb-duplicate-pk.sql
@@ -184,7 +183,7 @@ repository read-only so the transient container can execute the harness without
 changing Compose:
 
 ```sh
-"$docker_bin" compose -p "$project" run --rm --no-deps \
+docker compose -p "$project" run --rm --no-deps \
   --entrypoint python -v "$PWD:/workspace:ro" -w /workspace \
   simulator -B -u -m experiments.application_failure_boundary failure
 ```
@@ -238,12 +237,12 @@ Python base image and the existing experiment dependencies on the same internal
 Compose network:
 
 ```sh
-container_id=$("$docker_bin" compose -p "$project" ps -q mariadb)
-network_name=$("$docker_bin" inspect --format \
+container_id=$(docker compose -p "$project" ps -q mariadb)
+network_name=$(docker inspect --format \
   '{{range $name, $settings := .NetworkSettings.Networks}}{{$name}}{{end}}' \
   "$container_id")
 
-"$docker_bin" run --rm --network "$network_name" \
+docker run --rm --network "$network_name" \
   --volume "$PWD:/workspace" --workdir /workspace \
   --env MARIADB_HOST=mariadb \
   --env MARIADB_PORT=3306 \

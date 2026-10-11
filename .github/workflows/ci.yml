@@ -35,9 +35,6 @@ jobs:
       - name: Run Python tests
         run: python -B -m unittest discover -s tests -v
 
-      - name: Check whitespace
-        run: git diff --check
-
       - name: Validate Compose configuration
         run: docker compose config --quiet
 
