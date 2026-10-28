@@ -22,7 +22,7 @@ All InnoDB foreign keys use `RESTRICT` for deletion and key updates. IDs are tre
 
 ## Checkout and historical truth
 
-The seed and simulator checkout lock product rows and create each order, its items, and stock decrements inside explicit InnoDB transactions. Event inserts are outside checkout transactions. No successful checkout depends on committing a DuckDB write.
+The seed and simulator checkout lock product rows and create each order, its items, and stock decrements inside explicit InnoDB transactions. DuckDB event writes are outside the checkout transaction, but the simulator proceeds to checkout only after the preceding `session_start` and product-view writes succeed.
 
 `order_items.unit_price` captures the catalog price at checkout. Revenue is derived from quantity times this captured price; there is no duplicated order total. The seed changes the notebook catalog price from EUR 10 to EUR 12 after purchases, while its purchased price stays EUR 10. Committed purchases must remain immutable through application policy; the schema does not prohibit all later updates.
 

@@ -1,5 +1,9 @@
 Area 20 — [An application that proves the two-engine pattern](https://mariadb.org/bachelor_hackathon_2026-09/) — MariaDB Student Database Projects, 2026-09.
 
+Team X:
+- Wiktoria Sobieska
+- Kaan Okumus
+
 # Real-Time Commerce & Campaign Analytics
 
 A Constructor University project investigating when operational and analytical workloads benefit from different storage engines inside one MariaDB server.
