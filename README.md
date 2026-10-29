@@ -8,9 +8,18 @@ Team X:
 
 A Constructor University project investigating when operational and analytical workloads benefit from different storage engines inside one MariaDB server.
 
-The application includes five tables, deterministic commerce activity, a continuous session simulator, and a campaign conversion/revenue query combining DuckDB session history with InnoDB purchases. InnoDB owns products, campaigns, orders, and order items; DuckDB owns `activity_events`. Checkout stays entirely inside InnoDB.
+The split follows the data's role: InnoDB owns authoritative products, campaigns, orders, and order items. Checkout creates orders and items and updates product stock inside one InnoDB transaction. MariaDB's DuckDB engine stores accumulating `activity_events` for analytical work. A continuous simulator generates browsing and purchases; the read-only dashboard shows operational and activity data and combines DuckDB session history with InnoDB purchases for campaign results.
 
-The original foundation is preserved in Git at `v0.1.0`. The read-only Flask dashboard combines live operational and behavioural observations. The [experiment results](experiments/results.md) record transaction, integrity, and application-failure observations. In the same-server query comparison, the two-engine variant had lower measured median latency for activity aggregation and campaign analysis, while indexed InnoDB was faster for `recent_activity LIMIT 50`; these findings apply only to the tested workloads and scales ([method and results](experiments/analytical_benchmark/README.md)). A separate experiment measures feed freshness when copying to a standalone DuckDB store ([separate-store results](experiments/results.md#6-separate-analytical-store-freshness)); it is distinct from the same-server engine comparison.
+**Try it:** [fresh-storage setup](#fresh-storage-setup) → [expected fixture results](#expected-results) → [live dashboard](#run-the-dashboard).
+
+**Evidence and trade-offs:**
+
+- **Correctness fixture:** The 11-event deterministic seed checks application results; it is not the performance dataset.
+- **Same-server benchmark:** Seed 17 generated 5,000- and 50,000-session datasets. Each query/variant had three discarded warmups and 20 measured warm-cache executions, with complete `fetchall()` results and correctness checks before and after. Two-engine median latency was lower for activity aggregation and campaign analysis; indexed InnoDB was faster for `recent_activity LIMIT 50`. These results depend on workload, scale, indexes, and environment ([method and results](experiments/analytical_benchmark/README.md)).
+- **Failure and integrity limits:** Normal cross-engine commit/rollback observations do not establish crash-safe atomicity. The tested MariaDB DuckDB engine accepted a duplicate declared `event_id` primary key; InnoDB rejected the tested primary-key, foreign-key, and `CHECK` violations. A required event-write failure stopped that simulator session before checkout ([experiment report](experiments/results.md)).
+- **Separate-store comparison:** A standalone DuckDB store is a separate comparison architecture. With a 2.0-second feed interval, five runs produced 335 valid observations with a pooled median application-event-to-confirmed-analytical-visibility delay of 1100.525 ms (about 1.10 seconds). This is feed freshness, not MariaDB commit latency or production CDC, and is distinct from same-server query latency ([results](experiments/results.md#6-separate-analytical-store-freshness)).
+
+The original foundation is preserved in Git at `v0.1.0`.
 
 See [the schema guide](docs/schema.md) for relationships, integrity boundaries, and observed plugin limitations.
 
@@ -86,6 +95,8 @@ docker compose exec -T mariadb sh -c 'MYSQL_PWD="$MARIADB_ROOT_PASSWORD" mariadb
 Schema and seed are one-time scripts for an empty application database; they are not idempotent and do not run automatically at startup. Do not use client `--force` to continue after SQL errors. The seed prints product IDs from its locking reads. Verification is read-only and can be repeated; inspect its results, since unexpected counts do not automatically cause a nonzero client exit.
 
 ## Expected results
+
+These are results for the five-session deterministic correctness/demo fixture, which contains 11 activity events. The performance benchmark uses separate generated datasets of 5,000 and 50,000 sessions.
 
 | Table | Engine | Seed rows |
 | --- | --- | ---: |
