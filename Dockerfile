@@ -18,4 +18,5 @@ RUN set -eu; \
     rm -f "/tmp/$package_file"; \
     rm -rf /var/lib/apt/lists/*
 
-COPY --chmod=0644 docker/mariadb-init/01-dashboard-user.sh /docker-entrypoint-initdb.d/01-dashboard-user.sh
+COPY docker/mariadb-init/01-dashboard-user.sh /docker-entrypoint-initdb.d/01-dashboard-user.sh
+RUN chmod 0644 /docker-entrypoint-initdb.d/01-dashboard-user.sh
